@@ -44,6 +44,14 @@ Thumbs.db
 # Long nested backups
 agents/SEC/backups/
 
+# Backup and archive folders
+backups/
+archive/
+agents/*/backups/
+
+# Quarantine / temp
+.quarantine/
+
 # Data / database
 data/pg_data/
 data/qdrant_storage/

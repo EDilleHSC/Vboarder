@@ -1,8 +1,0 @@
-﻿{
-    "system_prompt":  "agents\\\\CEO\\\\system_prompt.txt",
-    "memory":  "agents\\\\CEO\\\\memory.json",
-    "name":  "CEO VBoarder",
-    "model":  "mixtral:latest",
-    "status":  "active",
-    "version":  "1.0.1"
-}
