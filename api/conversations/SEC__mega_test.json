@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Schedule a board meeting for next Friday, 10AM."
+  },
+  {
+    "role": "assistant",
+    "content": " Proposal: Scheduling the next board meeting on Friday.\nOptions:\n- Friday 10:00 AM MT / 12:00 PM ET\nAgenda:\n- Review Q4 objectives and progress\n- Discuss financial reports\n- Address any strategic concerns\nMaterials: I'll prepare the agenda, financial reports, and meeting materials.\nConfirmation: Shall I schedule for Friday 10:00 AM MT?"
+  }
+]

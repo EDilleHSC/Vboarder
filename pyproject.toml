@@ -1,0 +1,8 @@
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "W"]
+
+[tool.ruff.per-file-ignores]
+# Allow tests and scripts more flexibility
+"tests/*" = ["D"]
+"scripts/*" = ["D"]

@@ -1,0 +1,7 @@
+﻿{
+    "system_prompt":  "agents\\AIR\\system.txt",
+    "memory":  "agents\\AIR\\memory.json",
+    "name":  "AIR",
+    "model":  "neural-chat:latest",
+    "status":  "restricted"
+}

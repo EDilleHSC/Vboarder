@@ -1,0 +1,80 @@
+{
+  "timestamp": "2025-10-06T10:52:20.526565",
+  "shift_priorities": [
+    {
+      "priority": 1,
+      "name": "PDF Ingestion Test",
+      "status": "error",
+      "error": "No module named 'psutil'"
+    },
+    {
+      "priority": 2,
+      "name": "Markdown Export Patch",
+      "status": "error",
+      "error": "cannot import name 'safe_convert_to_markdown' from 'markdown_export_patch' (D:\\ai\\projects\\vboarder\\api\\scripts\\markdown_export_patch.py)"
+    },
+    {
+      "priority": 3,
+      "name": "GPU Monitoring",
+      "status": "completed",
+      "success": true,
+      "details": {
+        "duration_seconds": 15,
+        "samples_collected": 15,
+        "memory": {
+          "baseline_mb": 0.0,
+          "min_mb": 0.0,
+          "max_mb": 0.0,
+          "avg_mb": 0.0,
+          "peak_delta_mb": 0.0
+        },
+        "temperature": {
+          "min_c": 45.0,
+          "max_c": 45.0,
+          "avg_c": 45.0
+        }
+      }
+    },
+    {
+      "priority": 4,
+      "name": "Latency Logging",
+      "status": "completed",
+      "success": true,
+      "details": {
+        "period_hours": 8,
+        "total_docs": 2,
+        "successful": 2,
+        "errors": 0,
+        "avg_latency": 1.15,
+        "by_type": {
+          "pdf": {
+            "count": 1,
+            "avg_latency": 1.5,
+            "compliance_rate": 1.0
+          },
+          "csv": {
+            "count": 1,
+            "avg_latency": 0.8,
+            "compliance_rate": 1.0
+          }
+        }
+      }
+    },
+    {
+      "priority": 5,
+      "name": "Docling Configuration",
+      "status": "manual_review_required",
+      "notes": "Review Docling config for auto-detection of new doc types"
+    },
+    {
+      "priority": 6,
+      "name": "RT-DETR v2 Unit Test",
+      "status": "completed",
+      "success": true,
+      "details": {
+        "exit_code": 0,
+        "test_passed": true
+      }
+    }
+  ]
+}

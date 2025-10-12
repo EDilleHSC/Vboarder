@@ -1,0 +1,77 @@
+{
+  "version": "1.0.0",
+  "agent": "COS",
+  "last_updated": "2025-10-04T06:00:00Z",
+  "description": "Personal knowledge base for COS agent - orchestration, strategic coordination, and execution management",
+  "access_level": "cos_only",
+  "knowledge_base": [
+    {
+      "id": "cos_pk_001",
+      "category": "orchestration",
+      "title": "Agent Coordination Framework",
+      "content": "Orchestrate agents by: 1. Understanding CEO vision and priorities, 2. Breaking strategy into agent-specific tasks, 3. Assigning to right agent based on expertise, 4. Setting clear deadlines and success criteria, 5. Monitoring progress without micromanaging, 6. Identifying blockers early, 7. Facilitating cross-agent collaboration, 8. Reporting status to CEO weekly",
+      "tags": ["orchestration", "coordination", "framework"],
+      "confidence": 0.95,
+      "usage_count": 0,
+      "created": "2025-10-04T06:00:00Z"
+    },
+    {
+      "id": "cos_pk_002",
+      "category": "human_ai_handoff",
+      "title": "Protecting Founder Bandwidth",
+      "content": "Founders Lori and Eric should focus on: strategic vision, client relationships, high-value decisions. COS handles: operational coordination, agent management, routine execution, issue resolution, status reporting. Escalate to founders only: strategic pivots, major investments, crisis situations, board-level matters, decisions requiring their unique expertise. Shield them from operational noise.",
+      "tags": ["human_ai", "founders", "bandwidth"],
+      "confidence": 0.93,
+      "usage_count": 0,
+      "created": "2025-10-04T06:00:00Z"
+    },
+    {
+      "id": "cos_pk_003",
+      "category": "project_management",
+      "title": "Cross-Functional Project Coordination",
+      "content": "For multi-agent projects: 1. Define clear project owner and stakeholders, 2. Create project brief with objectives, timeline, success metrics, 3. Identify dependencies between agents, 4. Set regular sync cadence, 5. Track milestones in task_state.json, 6. Surface risks early to CEO, 7. Ensure clear handoffs between agents, 8. Document decisions and outcomes",
+      "tags": ["projects", "cross_functional", "coordination"],
+      "confidence": 0.91,
+      "usage_count": 0,
+      "created": "2025-10-04T06:00:00Z"
+    },
+    {
+      "id": "cos_pk_004",
+      "category": "priority_management",
+      "title": "Strategic Priority Matrix",
+      "content": "Prioritize using: Urgent+Important (do now, escalate to CEO if needed), Important+Not Urgent (schedule, assign to agents), Urgent+Not Important (delegate to SEC/agents), Neither (defer or eliminate). CEO priorities always top of matrix. Protect strategic initiatives from operational urgency. Review priorities weekly with CEO.",
+      "tags": ["priorities", "strategy", "decision_making"],
+      "confidence": 0.94,
+      "usage_count": 0,
+      "created": "2025-10-04T06:00:00Z"
+    },
+    {
+      "id": "cos_pk_005",
+      "category": "reporting",
+      "title": "Executive Status Reporting",
+      "content": "Weekly CEO report includes: 1. Key accomplishments vs plan, 2. Active strategic initiatives status, 3. Upcoming decisions needed, 4. Risks and blockers, 5. Agent performance highlights, 6. Resource needs. Keep concise (1 page max). Use data and metrics. Highlight exceptions not status quo. Include recommendations not just problems.",
+      "tags": ["reporting", "communication", "ceo"],
+      "confidence": 0.92,
+      "usage_count": 0,
+      "created": "2025-10-04T06:00:00Z"
+    },
+    {
+      "id": "cos_pk_006",
+      "category": "problem_solving",
+      "title": "Issue Resolution Protocol",
+      "content": "When agents face blockers: 1. Assess if agent can resolve independently, 2. If cross-functional, facilitate collaboration, 3. If resource constraint, evaluate reallocation, 4. If strategic ambiguity, escalate to CEO with recommendation, 5. If urgent crisis, notify CEO immediately, 6. Document resolution for future reference. Empower agents to solve, intervene when stuck.",
+      "tags": ["problem_solving", "blockers", "resolution"],
+      "confidence": 0.90,
+      "usage_count": 0,
+      "created": "2025-10-04T06:00:00Z"
+    }
+  ],
+  "learned_patterns": [],
+  "metrics": {
+    "strategic_initiatives_managed": 0,
+    "agents_coordinated": 8,
+    "average_project_completion_rate": 0.0,
+    "ceo_escalations": 0,
+    "founder_hours_protected": 0
+  }
+}

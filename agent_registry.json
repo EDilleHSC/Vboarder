@@ -1,0 +1,50 @@
+﻿[
+    {
+        "system_prompt":  "agents\\\\CEO\\\\system_prompt.txt",
+        "memory":  "agents\\\\CEO\\\\memory.json",
+        "name":  "CEO VBoarder",
+        "model":  "mixtral:latest",
+        "status":  "active",
+        "version":  "1.0.1"
+    },
+    {
+        "system_prompt":  "agents\\\\CTO\\\\system_prompt.txt",
+        "memory":  "agents\\\\CTO\\\\memory.json",
+        "name":  "CTO VBoarder",
+        "model":  "codellama:latest",
+        "status":  "active",
+        "version":  "1.0.0"
+    },
+    {
+        "system_prompt":  "agents\\CFO\\system.txt",
+        "memory":  "agents\\CFO\\memory.json",
+        "name":  "CFO",
+        "model":  "phi3:3.8b",
+        "status":  "active"
+    },
+    {
+        "system_prompt":  "agents\\COO\\system.txt",
+        "memory":  "agents\\COO\\memory.json",
+        "name":  "COO",
+        "model":  "llama3:8b",
+        "status":  "active"
+    },
+    {
+        "system_prompt":  "agents\\CMO\\system.txt",
+        "memory":  "agents\\CMO\\memory.json",
+        "name":  "CMO",
+        "model":  "qwen2:7b",
+        "status":  "active"
+    },
+    {
+        "agent":  "CLO",
+        "status":  "active",
+        "last_updated":  "2025-09-29T08:31:33.0350349-06:00"
+    },
+    {
+        "name":  "UNKNOWN",
+        "status":  "active",
+        "version":  "1.0",
+        "model":  "llama3.1:8b"
+    }
+]

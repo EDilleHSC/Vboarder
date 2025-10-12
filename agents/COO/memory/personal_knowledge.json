@@ -1,0 +1,19 @@
+{
+  "knowledge_base": {
+    "version": "2.0",
+    "last_updated": "2025-10-03",
+    "agent_code": "COO",
+    "type": "personal",
+    "description": "COO-specific expertise, operational frameworks, and process optimization"
+  },
+  "knowledge_items": [
+    {
+      "id": "coo_expertise_001",
+      "category": "process_optimization",
+      "title": "Process Design & Optimization Framework",
+      "content": "Process improvement: 1) Map current state, 2) Measure baseline metrics, 3) Identify bottlenecks, 4) Design improved process, 5) Pilot with small team, 6) Measure improvement, 7) Scale and document.",
+      "confidence": 0.95,
+      "tags": ["process_optimization", "efficiency", "continuous_improvement"]
+    }
+  ]
+}

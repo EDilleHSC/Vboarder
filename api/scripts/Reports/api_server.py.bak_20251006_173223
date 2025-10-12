@@ -1,0 +1,209 @@
+"""
+VBoarder Unified API Server (v2)
+Optimized for multi-agent coordination and dynamic discovery.
+"""
+
+import os
+import json
+import logging
+import asyncio
+from typing import List, Set
+
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel, Field, field_validator
+from dotenv import load_dotenv
+
+# -----------------------------------------------------------------------------
+# 🔧 Configuration
+# -----------------------------------------------------------------------------
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
+load_dotenv()
+
+APP_TITLE = "VBoarder Executive API"
+API_PORT = int(os.getenv("API_PORT", 8000))
+FRONTEND_PORT = int(os.getenv("FRONTEND_PORT", 5173))
+RELOAD = os.getenv("RELOAD", "true").lower() == "true"
+WORKERS = int(os.getenv("WORKERS", "1"))
+QUERY_TIMEOUT = int(os.getenv("QUERY_TIMEOUT_SEC", "45"))
+
+SCRIPT_PATH = os.path.join(BASE_DIR, "query_agent_memory.py")
+AGENT_JSON = os.path.join(ROOT_DIR, "webui_agents.json")
+AGENT_DIR = os.path.join(ROOT_DIR, "agents")
+
+# -----------------------------------------------------------------------------
+# 🪶 Logging Setup
+# -----------------------------------------------------------------------------
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
+logger = logging.getLogger("vboarder.api")
+
+# -----------------------------------------------------------------------------
+# 🧩 Agent Loader
+# -----------------------------------------------------------------------------
+def load_agents() -> List[dict]:
+    """Load agents from webui_agents.json or discover them automatically."""
+    if os.path.exists(AGENT_JSON):
+        try:
+            with open(AGENT_JSON, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                logger.info(f"✅ Loaded {len(data)} agents from webui_agents.json")
+                return [
+                    {**a, "code": a.get("agent_name", a.get("code", "")).lower()}
+                    for a in data
+                ]
+        except Exception as e:
+            logger.error(f"Failed to read agent registry: {e}")
+
+    agents = []
+    if os.path.isdir(AGENT_DIR):
+        for name in os.listdir(AGENT_DIR):
+            path = os.path.join(AGENT_DIR, name)
+            if os.path.isdir(path):
+                sys_file = os.path.join(path, "system.txt")
+                mem_file = os.path.join(path, "memory.json")
+                agents.append({
+                    "code": name.lower(),
+                    "name": name.upper(),
+                    "system_prompt": sys_file if os.path.exists(sys_file) else None,
+                    "memory": mem_file if os.path.exists(mem_file) else None,
+                    "path": path,
+                    "status": "active"
+                })
+        logger.info(f"🔍 Auto-detected {len(agents)} agents from /agents folder.")
+    else:
+        logger.warning("⚠️ No /agents directory found.")
+    return agents
+
+AGENTS = load_agents()
+VALID_AGENTS: Set[str] = {a["code"] for a in AGENTS}
+
+# -----------------------------------------------------------------------------
+# 🚀 FastAPI Init
+# -----------------------------------------------------------------------------
+app = FastAPI(title=APP_TITLE)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:3000",
+    ],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["*"],
+    allow_credentials=True,
+)
+
+# -----------------------------------------------------------------------------
+# 📦 Models
+# -----------------------------------------------------------------------------
+class ChatRequest(BaseModel):
+    message: str = Field(..., description="User input message to the agent.")
+
+    @field_validator("message")
+    @classmethod
+    def validate_message(cls, v: str) -> str:
+        v = v.strip()
+        if not v:
+            raise ValueError("Message cannot be empty.")
+        if len(v) > 8000:
+            raise ValueError("Message too long (max 8000 chars).")
+        return v
+
+
+class ChatResponse(BaseModel):
+    agent: str
+    response: str
+
+
+# -----------------------------------------------------------------------------
+# ⚙️ Helpers
+# -----------------------------------------------------------------------------
+def assert_script_exists():
+    if not os.path.isfile(SCRIPT_PATH):
+        raise HTTPException(status_code=500, detail=f"Missing script: {SCRIPT_PATH}")
+
+
+def parse_query_output(stdout: str) -> str:
+    """Try JSON parsing first; fallback to plain text."""
+    try:
+        data = json.loads(stdout)
+        if isinstance(data, dict):
+            for key in ("response", "answer", "result"):
+                if key in data:
+                    return str(data[key])
+        return json.dumps(data)
+    except Exception:
+        pass
+
+    delimiter = "=" * 70
+    return stdout.split(delimiter)[-1].strip() if delimiter in stdout else stdout.strip()
+
+
+async def run_query(agent: str, message: str) -> str:
+    assert_script_exists()
+    cmd = ["python", SCRIPT_PATH, agent, message]
+    logger.info(f"🧠 Running agent query: {cmd}")
+
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=QUERY_TIMEOUT)
+        if proc.returncode != 0:
+            raise HTTPException(status_code=500, detail=stderr.decode())
+        return parse_query_output(stdout.decode())
+    except asyncio.TimeoutError:
+        raise HTTPException(status_code=504, detail="Query timed out.")
+    except Exception as e:
+        logger.exception("Query error")
+        raise HTTPException(status_code=500, detail=f"Internal error: {e}")
+
+
+# -----------------------------------------------------------------------------
+# 🌐 Routes
+# -----------------------------------------------------------------------------
+@app.get("/health")
+def health_check():
+    return {"status": "ok", "agents": len(AGENTS)}
+
+
+@app.get("/vboarder/agents")
+def list_agents():
+    return AGENTS
+
+
+@app.post("/vboarder/chat/{agent}", response_model=ChatResponse)
+async def chat_agent(agent: str, req: ChatRequest):
+    code = agent.lower()
+    if code not in VALID_AGENTS:
+        raise HTTPException(status_code=404, detail=f"Agent '{agent}' not found.")
+
+    response_text = await run_query(code, req.message)
+    return ChatResponse(agent=code, response=response_text)
+
+
+@app.exception_handler(HTTPException)
+async def handle_http_error(request: Request, exc: HTTPException):
+    return JSONResponse(status_code=exc.status_code, content={"error": exc.detail})
+
+
+# -----------------------------------------------------------------------------
+# 🏁 Entrypoint
+# -----------------------------------------------------------------------------
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(
+        "api_server:app",
+        host="0.0.0.0",
+        port=API_PORT,
+        reload=RELOAD and WORKERS == 1,
+        workers=WORKERS if not RELOAD else 1,
+    )

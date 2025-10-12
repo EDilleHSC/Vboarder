@@ -1,0 +1,292 @@
+# === 🧠 Local Ollama Fallback ===
+def try_ollama(prompt: str):
+    """Attempt to query the local Ollama model."""
+    import requests
+    try:
+        ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+        ollama_model = os.getenv("OLLAMA_MODEL", "llama3:8b")
+
+        print(f"🔁 Trying Ollama local model → {ollama_model}")
+
+        resp = requests.post(
+            f"{ollama_host}/api/generate",
+            json={"model": ollama_model, "prompt": prompt},
+            timeout=45,
+        )
+
+        if resp.status_code == 200:
+            # Ollama may stream, but final response has "response" or full JSON lines
+            try:
+                data = resp.json()
+            except Exception:
+                data = {"response": resp.text}
+
+            print(f"✅ OLLAMA success ({ollama_model})")
+            return {"provider": "ollama", "response": data.get("response", resp.text)}
+        else:
+            print(f"⚠️ OLLAMA error {resp.status_code}: {resp.text}")
+            return None
+
+    except Exception as e:
+        print(f"❌ OLLAMA request failed: {e}")
+        return None
+# === 🧠 Local Ollama Fallback ===
+try:
+    import requests
+    ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+    ollama_model = os.getenv("OLLAMA_MODEL", "llama3:8b")
+    resp = requests.post(
+        f"{ollama_host}/api/generate",
+        json={"model": ollama_model, "prompt": prompt},
+        timeout=45,
+    )
+    if resp.status_code == 200:
+        data = resp.json()
+        print(f"✅ OLLAMA success ({ollama_model})")
+        return {"provider": "ollama", "response": data.get("response", "")}
+    else:
+        print(f"⚠️ OLLAMA error {resp.status_code}: {resp.text}")
+except Exception as e:
+    print(f"❌ OLLAMA request failed: {e}")
+#!/usr/bin/env python3
+"""
+SmartHybrid Inference Router v3.1
+Friendly logging + automatic fallback routing
+"""
+
+import os, time, json, logging
+from dotenv import load_dotenv
+from datetime import datetime
+from typing import Optional, Dict, Any
+
+# --- Libraries (requires: openai, httpx)
+try:
+    import httpx
+    import openai
+except ImportError:
+    print("FATAL: Missing required libraries. Please install: pip install openai httpx python-dotenv")
+    exit(1)
+
+# --- Load environment
+load_dotenv(override=True) # Use override=True for fresh load
+OPENAI_KEY = os.getenv("OPENAI_API_KEY")
+GEMINI_KEY = os.getenv("GEMINI_API_KEY")
+HF_TOKEN   = os.getenv("HF_TOKEN")
+HF_ENDPOINT = os.getenv("HF_MODEL_ENDPOINT", "https://api-inference.huggingface.co/models/google/gemma-2b")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-3.5-turbo")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+
+# --- Client Initialization
+openai_client = openai.OpenAI(api_key=OPENAI_KEY) if OPENAI_KEY else None
+
+# --- Logging setup
+logging.basicConfig(level=logging.INFO, format="%(message)s")
+
+def color(text, c):
+    colors = {"green":"\033[92m","yellow":"\033[93m","red":"\033[91m","blue":"\033[94m","reset":"\033[0m"}
+    return f"{colors.get(c,'')}{text}{colors['reset']}"
+
+def translate_error(code):
+    mapping = {
+        401: "Unauthorized – check API key",
+        403: "Forbidden – model not allowed",
+        404: "Model or endpoint not found",
+        429: "Rate limit or quota exceeded",
+        500: "Server error – provider issue"
+    }
+    return mapping.get(code, f"Unexpected error ({code})")
+
+# ====================================================================
+# === INFERENCE FUNCTIONS ===
+# ====================================================================
+
+def query_openai(prompt: str) -> Optional[str]:
+    """Query OpenAI API (main reasoning)."""
+    if not openai_client:
+        logging.error(color("OpenAI client not initialized.", "red"))
+        return None
+    try:
+        t0 = time.time()
+        resp = openai_client.chat.completions.create(
+            model=OPENAI_MODEL,
+            messages=[{"role":"user","content":prompt}],
+            temperature=0.7,
+            max_tokens=4096
+        )
+        latency = round(time.time()-t0, 2)
+        result = resp.choices[0].message.content.strip()
+        logging.info(color(f"✓ OpenAI success ({latency}s)", "green"))
+        return result
+    except openai.APIError as e:
+        logging.error(color(f"OpenAI API Error: {translate_error(e.status_code)}", "red"))
+        return None
+    except Exception as e:
+        logging.error(color(f"OpenAI General Error: {e}", "red"))
+        return None
+
+def query_gemini(prompt: str) -> Optional[str]:
+    """Query Google Gemini API (creative / summarization)."""
+    if not GEMINI_KEY:
+        logging.error(color("Gemini API key not configured.", "red"))
+        return None
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_KEY}"
+    body = {"contents":[{"parts":[{"text":prompt}]}], "config": {"temperature": 0.8, "maxOutputTokens": 4096}}
+    try:
+        t0 = time.time()
+        r = httpx.post(url, json=body, timeout=20)
+        latency = round(time.time()-t0, 2)
+        r.raise_for_status() # Raises for 4xx/5xx errors
+        
+        # Simple parsing for text response
+        data = r.json()
+        result = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+        
+        logging.info(color(f"✓ Gemini success ({latency}s)", "green"))
+        return result
+    except httpx.HTTPStatusError as e:
+        logging.error(color(f"Gemini HTTP Error: {translate_error(e.response.status_code)}", "red"))
+        return None
+    except Exception as e:
+        logging.error(color(f"Gemini General Error: {e}", "red"))
+        return None
+
+def query_huggingface(prompt: str) -> Optional[str]:
+    """Query Hugging Face inference endpoint (lightweight)."""
+    if not HF_TOKEN:
+        logging.error(color("Hugging Face token not configured.", "red"))
+        return None
+    headers = {"Authorization": f"Bearer {HF_TOKEN}", "Content-Type": "application/json"}
+    body = {"inputs": prompt}
+    try:
+        t0 = time.time()
+        r = httpx.post(HF_ENDPOINT, headers=headers, json=body, timeout=30)
+        latency = round(time.time()-t0, 2)
+        r.raise_for_status()
+
+        # Handle different HF response formats
+        data = r.json()
+        result = ""
+        if isinstance(data, list) and len(data) > 0:
+            result = data[0].get("generated_text", "").strip()
+        elif isinstance(data, dict):
+            result = data.get("generated_text", "").strip()
+            
+        if result:
+            logging.info(color(f"✓ Hugging Face success ({latency}s)", "green"))
+            return result
+        
+        logging.error(color("Hugging Face returned empty response.", "red"))
+        return None
+    except httpx.HTTPStatusError as e:
+        logging.error(color(f"HF HTTP Error: {translate_error(e.response.status_code)}", "red"))
+        return None
+    except Exception as e:
+        logging.error(color(f"Hugging Face General Error: {e}", "red"))
+        return None
+
+# ====================================================================
+# === ROUTING LOGIC (Deterministic Cascade) ===
+# ====================================================================
+
+def route_prompt(prompt: str) -> Dict[str, Any]:
+    """
+    Deterministic routing cascade: OpenAI -> Gemini -> Hugging Face.
+    """
+    if not prompt or not prompt.strip():
+        return {"provider": None, "response": "❌ Empty prompt provided"}
+
+    logging.info(color(f"🔁 Routing prompt: '{prompt[:40]}...' ({len(prompt)} chars)", "blue"))
+
+    # The fixed cascade logic
+    for name, func in [
+        ("openai", query_openai),
+        ("gemini", query_gemini),
+        ("huggingface", query_huggingface),
+    ]:
+        result = func(prompt)
+        if result:
+            return {"provider": name, "response": result}
+    
+    final_error = "❌ All providers failed"
+    logging.error(color(final_error, "red"))
+    return {"provider": None, "response": final_error}
+
+# ====================================================================
+# === SMOKE TEST / HEALTH CHECK ===
+# ====================================================================
+
+# Health Check Functions (adapted from original)
+
+def test_openai():
+    if not OPENAI_KEY:
+        return {"provider":"openai","status":"❌","message":"Missing API key"}
+    try:
+        t0 = time.time()
+        # Use the client directly
+        openai_client.chat.completions.create(model=OPENAI_MODEL, messages=[{"role":"user","content":"ping"}])
+        latency = round(time.time()-t0,2)
+        return {"provider":"openai","status":"✅","message":f"Response OK ({latency}s)"}
+    except openai.APIError as e:
+        return {"provider":"openai","status":"⚠️","message":translate_error(e.status_code)}
+    except Exception as e:
+        return {"provider":"openai","status":"⚠️","message":str(e)}
+
+def test_gemini():
+    if not GEMINI_KEY:
+        return {"provider":"gemini","status":"❌","message":"Missing API key"}
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent?key={GEMINI_KEY}"
+    body = {"contents":[{"parts":[{"text":"ping"}]}]}
+    try:
+        t0 = time.time()
+        r = httpx.post(url, json=body, timeout=10)
+        latency = round(time.time()-t0,2)
+        if r.status_code == 200:
+            return {"provider":"gemini","status":"✅","message":f"Response OK ({latency}s)"}
+        return {"provider":"gemini","status":"⚠️","message":translate_error(r.status_code)}
+    except Exception as e:
+        return {"provider":"gemini","status":"⚠️","message":str(e)}
+
+def test_huggingface():
+    if not HF_TOKEN:
+        return {"provider":"huggingface","status":"❌","message":"Missing API token"}
+    headers = {"Authorization": f"Bearer {HF_TOKEN}"}
+    try:
+        t0 = time.time()
+        r = httpx.post(HF_ENDPOINT, headers=headers, json={"inputs":"ping"}, timeout=10)
+        latency = round(time.time()-t0,2)
+        if r.status_code == 200:
+            return {"provider":"huggingface","status":"✅","message":f"Response OK ({latency}s)"}
+        return {"provider":"huggingface","status":"⚠️","message":translate_error(r.status_code)}
+    except Exception as e:
+        return {"provider":"huggingface","status":"⚠️","message":str(e)}
+
+
+if __name__ == "__main__":
+    
+    # 1. Health Check
+    print(color("🚀 SmartHybrid Inference Router v3.1", "yellow"))
+    print("="*60)
+    print("🔍 ENV check →", {"OPENAI_API_KEY":bool(OPENAI_KEY),"GEMINI_API_KEY":bool(GEMINI_KEY),"HF_TOKEN":bool(HF_TOKEN)})
+    print("\n🧪 Running Health Check...\n")
+
+    results = [test_openai(), test_gemini(), test_huggingface()]
+    for r in results:
+        col = "green" if r["status"]=="✅" else "yellow" if r["status"]=="⚠️" else "red"
+        print(color(f"{r['status']} {r['provider'].upper():12s} → {r['message']}", col))
+
+    summary = {r["provider"]: r for r in results}
+    os.makedirs("logs", exist_ok=True)
+    with open("logs/model_test.json","w") as f:
+        json.dump({"timestamp":datetime.now().isoformat(),"results":summary},f,indent=2)
+    print("\n📝 Summary written to logs/model_test.json")
+    print("="*60)
+    
+    # 2. Inference Test using the router
+    test_prompt = "Briefly explain the role of a reverse proxy."
+    print(color("\n🔥 Testing Router Cascade...", "yellow"))
+    
+    router_output = route_prompt(test_prompt)
+    
+    print("\n" + color("✅ Router Result Summary:", "green"))
+    print(f"Provider: {router_output['provider']}")
+    print(f"Response (First 100 chars): {router_output['response'][:100]}...")

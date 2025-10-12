@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+def is_valid_json(file_path):
+    try:
+        if file_path.suffix == ".jsonl":
+            with open(file_path, 'r', encoding='utf-8') as f:
+                lines = f.readlines()
+                if not lines:
+                    return False, "Empty file"
+                for i, line in enumerate(lines):
+                    json.loads(line)  # validate each line individually
+        else:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                json.load(f)
+        return True, "OK"
+    except Exception as e:
+        return False, str(e)
+#!/usr/bin/env python3
+import os
+import json
+import argparse
+from pathlib import Path
+
+# --- Config ---
+CORE_FILES = [
+    "agent.json", "config.json", "memory.jsonl",
+    "persona.md", "prompt.md", "schedule.json"
+]
+
+def is_valid_json(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            json.load(f)
+        return True, "OK"
+    except Exception as e:
+        return False, str(e)
+
+def is_valid_md(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+            return bool(content.strip()), "OK"
+    except Exception as e:
+        return False, str(e)
+
+def scan_agents(base_dir: Path) -> dict:
+    results = {}
+    for agent_name in os.listdir(base_dir):
+        agent_path = base_dir / agent_name
+        if not agent_path.is_dir() or agent_name in ["tools", "templates"]:
+            continue
+
+        agent_report = {"files": {}, "status": "✅ PASS"}
+
+        for file in CORE_FILES:
+            full_path = agent_path / file
+            if not full_path.exists():
+                agent_report["files"][file] = "❌ MISSING"
+                agent_report["status"] = "❌ FAIL"
+                continue
+
+            if file.endswith((".json", ".jsonl")):
+                valid, msg = is_valid_json(full_path)
+            elif file.endswith(".md"):
+                valid, msg = is_valid_md(full_path)
+            else:
+                valid, msg = True, "SKIPPED"
+
+            agent_report["files"][file] = "✅ OK" if valid else f"❌ {msg}"
+            if not valid:
+                agent_report["status"] = "❌ FAIL"
+
+        results[agent_name] = agent_report
+    return results
+
+def main():
+    parser = argparse.ArgumentParser(description="Validate agent structure and health.")
+    parser.add_argument(
+        "--base",
+        default="/mnt/d/ai/projects/vboarder/agents",
+        help="Path to the root agent directory"
+    )
+    args = parser.parse_args()
+
+    base_path = Path(args.base)
+    log_output = base_path / "tools" / "logs" / "stability_log.json"
+
+    print("🔍 Scanning agents for stability...\n")
+    results = scan_agents(base_path)
+
+    # Write to log file
+    log_output.parent.mkdir(parents=True, exist_ok=True)
+    with open(log_output, 'w', encoding='utf-8') as logf:
+        json.dump(results, logf, indent=2)
+
+    print(f"✅ Stability report saved to: {log_output}\n")
+
+    # Summary
+    print("📊 Stability Summary:")
+    for name, report in results.items():
+        print(f" - {name}: {report['status']}")
+
+if __name__ == "__main__":
+    main()

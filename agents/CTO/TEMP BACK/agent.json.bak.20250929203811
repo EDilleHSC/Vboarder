@@ -1,0 +1,7 @@
+﻿{
+    "system_prompt":  "agents\\CTO\\system.txt",
+    "memory":  "agents\\CTO\\memory.json",
+    "name":  "CTO",
+    "model":  "llama3.1:8b",
+    "status":  "active"
+}

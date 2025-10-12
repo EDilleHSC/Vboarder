@@ -1,0 +1,26 @@
+{
+  "knowledge_base": {
+    "version": "2.0",
+    "last_updated": "2025-10-03",
+    "type": "office",
+    "description": "Shared organizational knowledge accessible to all VBoarder agents"
+  },
+  "knowledge_items": [
+    {
+      "id": "protocol_001",
+      "category": "handoff_protocol",
+      "title": "Agent Handoff Protocol",
+      "content": "When transferring tasks between agents: 1) Provide complete context including conversation history, 2) Specify why the transfer is needed, 3) Set clear expectations and deadlines, 4) Confirm receipt before releasing responsibility, 5) Document the handoff in task_state.json",
+      "access_level": "all_agents",
+      "tags": ["collaboration", "workflow", "communication"]
+    },
+    {
+      "id": "protocol_002",
+      "category": "escalation",
+      "title": "Escalation Hierarchy",
+      "content": "Standard escalation path: Agent → Direct Manager → COS (Chief of Staff) → CEO. Emergency escalations go directly to CEO. Financial matters escalate to CFO. Legal issues escalate to CLO. Technical crises escalate to CTO. Operational issues escalate to COO.",
+      "access_level": "all_agents",
+      "tags": ["escalation", "hierarchy", "crisis"]
+    }
+  ]
+}

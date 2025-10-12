@@ -1,0 +1,207 @@
+﻿"""
+VBoarder Executive API — Windows-Safe Build v3.2
+Optimized for stability, detailed debugging, and smooth async operation.
+"""
+
+import os
+import sys
+import json
+import logging
+import asyncio
+from typing import List, Dict, Optional, Set
+
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel, Field, field_validator
+from dotenv import load_dotenv
+
+# ----------------------------------------------------------------------------- #
+# 🪟 Windows event loop fix
+# ----------------------------------------------------------------------------- #
+if sys.platform.startswith("win"):
+    try:
+        asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+    except Exception:
+        pass
+
+# ----------------------------------------------------------------------------- #
+# 🔧 Configuration
+# ----------------------------------------------------------------------------- #
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
+load_dotenv()
+
+APP_TITLE = "VBoarder Executive API"
+API_PORT = int(os.getenv("API_PORT", 8000))
+FRONTEND_PORT = int(os.getenv("FRONTEND_PORT", 5173))
+RELOAD = os.getenv("RELOAD", "true").lower() == "true"
+WORKERS = int(os.getenv("WORKERS", "1"))
+QUERY_TIMEOUT = int(os.getenv("QUERY_TIMEOUT_SEC", "45"))
+
+SCRIPT_PATH = os.path.join(BASE_DIR, "query_agent_memory.py")
+AGENT_JSON = os.path.join(ROOT_DIR, "webui_agents.json")
+AGENT_DIR = os.path.join(ROOT_DIR, "agents")
+
+# ----------------------------------------------------------------------------- #
+# 🪶 Logging Setup
+# ----------------------------------------------------------------------------- #
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
+logger = logging.getLogger("vboarder.api")
+
+# ----------------------------------------------------------------------------- #
+# 🧩 Agent Discovery
+# ----------------------------------------------------------------------------- #
+def discover_agent_files(agent_dir: str) -> Dict[str, Optional[str]]:
+    """Locate key files within an agent directory."""
+    system_prompt, memory_file, persona_file = None, None, None
+
+    for candidate in [
+        "system.txt", "system_prompt.txt",
+        "prompts/system.txt", "prompts/system_detailed.txt",
+    ]:
+        p = os.path.join(agent_dir, candidate)
+        if os.path.exists(p):
+            system_prompt = p
+            break
+
+    for candidate in ["memory.json", "memory/memory.json", "state/memory.json"]:
+        p = os.path.join(agent_dir, candidate)
+        if os.path.exists(p):
+            memory_file = p
+            break
+
+    persona_path = os.path.join(agent_dir, "personas", "vision.txt")
+    if os.path.exists(persona_path):
+        persona_file = persona_path
+
+    return {"system_prompt": system_prompt, "memory": memory_file, "persona": persona_file}
+
+
+def load_agents() -> List[dict]:
+    """Load agents from webui_agents.json or discover them automatically."""
+    if os.path.exists(AGENT_JSON):
+        try:
+            with open(AGENT_JSON, "r", encoding="utf-8-sig") as f:
+                data = json.load(f)
+                logger.info(f"✅ Loaded {len(data)} agents from webui_agents.json")
+                return [{**a, "code": a.get("agent_name", a.get("code", "")).lower()} for a in data]
+        except Exception as e:
+    import traceback
+    tb = traceback.format_exc()
+    logger.exception(f"💥 Unexpected error during query for agent={agent}\\n{tb}")
+    raise HTTPException(
+        status_code=500,
+        detail=f"Internal error: {type(e).__name__}: {str(e)} | Traceback: {tb}"
+    )
+def parse_query_output(stdout: str) -> str:
+    try:
+        data = json.loads(stdout)
+        if isinstance(data, dict):
+            for key in ("response", "answer", "result"):
+                if key in data:
+                    return str(data[key])
+        return json.dumps(data)
+    except Exception:
+        pass
+    return stdout.strip()
+
+# ----------------------------------------------------------------------------- #
+# 🧠 Async Query Executor (Windows-Safe)
+# ----------------------------------------------------------------------------- #
+async def run_query(agent: str, message: str) -> str:
+    assert_script_exists()
+    cmd = [sys.executable, SCRIPT_PATH, agent, message]
+    logger.info(f"🧠 Running agent query: agent={agent}, msg_len={len(message)}, py={sys.executable}")
+
+    try:
+        loop = asyncio.get_running_loop()
+        proc = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+            cwd=os.path.dirname(os.path.dirname(SCRIPT_PATH)),  # project root
+            env=os.environ.copy(),
+        )
+
+        try:
+            stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=QUERY_TIMEOUT)
+        except asyncio.TimeoutError:
+            proc.kill()
+            await proc.wait()
+            raise HTTPException(status_code=504, detail="Query timed out.")
+
+        out_text = (stdout or b"").decode("utf-8", errors="replace").strip()
+        err_text = (stderr or b"").decode("utf-8", errors="replace").strip()
+
+        if proc.returncode != 0:
+            logger.error(f"❌ Query script failed (code {proc.returncode})\n{err_text}")
+            raise HTTPException(status_code=500, detail=f"Query failed (code {proc.returncode}): {err_text}")
+
+        if not out_text:
+            logger.warning(f"⚠️ Query script produced no output for agent={agent}")
+            raise HTTPException(status_code=500, detail="Query returned empty output.")
+
+        return parse_query_output(out_text)
+
+    except HTTPException:
+        raise
+    except Exception as e:
+    import traceback
+    tb = traceback.format_exc()
+    logger.exception(f"💥 Unexpected error during query for agent={agent}\\n{tb}")
+    raise HTTPException(
+        status_code=500,
+        detail=f"Internal error: {type(e).__name__}: {str(e)} | Traceback: {tb}"
+    )
+# ----------------------------------------------------------------------------- #
+# 🌐 Routes
+# ----------------------------------------------------------------------------- #
+@app.get("/health")
+def health_check():
+    return {"status": "ok", "agents_total": len(AGENTS), "agents_active": len(VALID_AGENTS)}
+
+@app.get("/vboarder/agents")
+def list_agents():
+    return AGENTS
+
+@app.post("/vboarder/chat/{agent}", response_model=ChatResponse)
+async def chat_agent(agent: str, req: ChatRequest):
+    code = agent.lower()
+    if code not in VALID_AGENTS:
+        raise HTTPException(status_code=404, detail=f"Agent '{agent}' not found. Available: {sorted(VALID_AGENTS)}")
+    response_text = await run_query(code, req.message)
+    return ChatResponse(agent=code, response=response_text)
+
+# 🧩 Debug Echo Route
+@app.post("/debug/echo")
+async def echo(req: ChatRequest):
+    return {"ok": True, "echo": req.message}
+
+@app.exception_handler(HTTPException)
+async def handle_http_error(request: Request, exc: HTTPException):
+    return JSONResponse(status_code=exc.status_code, content={"error": exc.detail})
+
+# ----------------------------------------------------------------------------- #
+# 🏁 Entrypoint
+# ----------------------------------------------------------------------------- #
+if __name__ == "__main__":
+    import uvicorn
+    logger.info(f"🚀 Starting {APP_TITLE} on port {API_PORT}")
+    logger.info(f"🧩 SCRIPT_PATH: {SCRIPT_PATH} (exists={os.path.isfile(SCRIPT_PATH)})")
+    logger.info(f"🐍 Python: {sys.executable}")
+    logger.info(f"📁 Agent directory: {AGENT_DIR}")
+    logger.info(f"✅ Active agents: {sorted(VALID_AGENTS)}")
+
+    uvicorn.run(
+        "api_server:app",
+        host="0.0.0.0",
+        port=API_PORT,
+        reload=RELOAD and WORKERS == 1,
+        workers=WORKERS if not RELOAD else 1,
+        log_level="info",
+    )
+

@@ -1,0 +1,19 @@
+{
+  "knowledge_base": {
+    "version": "2.0",
+    "last_updated": "2025-10-03",
+    "agent_code": "CMO",
+    "type": "personal",
+    "description": "CMO-specific expertise, marketing frameworks, and brand strategy"
+  },
+  "knowledge_items": [
+    {
+      "id": "cmo_expertise_001",
+      "category": "marketing_strategy",
+      "title": "Marketing Campaign Framework",
+      "content": "Campaign development: 1) Define objectives and KPIs, 2) Identify target audience, 3) Develop messaging and positioning, 4) Select channels, 5) Create content plan, 6) Execute and monitor, 7) Measure and optimize. Key metrics: CAC, conversion rates, brand awareness, engagement, ROI.",
+      "confidence": 0.95,
+      "tags": ["marketing", "campaigns", "strategy"]
+    }
+  ]
+}

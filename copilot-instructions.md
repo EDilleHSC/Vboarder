@@ -15,6 +15,40 @@ Each agent has:
 - A `prompt.txt` (custom system prompt)
 - A `memory.jsonl` (local memory file)
 
+---
+
+## 🗂️ Agent layout & onboarding (canonical)
+
+Agents are expected to live under the `agents/` folder using the path `agents/<AGENT_NAME>/`.
+
+For each agent folder include these files:
+
+- `config.json` — core behavior settings used by `simple_connector`/agent loaders.
+- `persona.md` — short human-readable description of tone, style, and persona.
+- `prompt.txt` — operational prompt used to assemble system messages.
+- `memory.jsonl` — newline-delimited JSON memory records (create empty file if missing).
+
+How Copilot should add a new agent:
+
+1. Create folder `agents/new_agent/` (lowercase allowed; runtime code normalizes names).
+2. Add `config.json`, `persona.md`, `prompt.txt`, and an empty `memory.jsonl`.
+3. Do not hardcode agent names; use filesystem iteration when listing agents.
+4. Keep `config.json` minimal; larger persona/prompt content belongs in their respective files.
+
+Example minimal `config.json`:
+
+```
+{
+  "name": "NEW_AGENT",
+  "role": "New Role",
+  "model": "ollama/ggml-model",
+  "version": "1.0"
+}
+```
+
+Copilot should use the canonical `agents/<AGENT_NAME>/` layout for new work. Existing references to `agents/agents_v2/` were migrated into `agents/` during the refactor.
+
+
 The system is modular, testable, and built to run locally — no cloud dependencies.
 
 ---

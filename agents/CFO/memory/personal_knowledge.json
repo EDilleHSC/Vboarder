@@ -1,0 +1,19 @@
+{
+  "knowledge_base": {
+    "version": "2.0",
+    "last_updated": "2025-10-03",
+    "agent_code": "CFO",
+    "type": "personal",
+    "description": "CFO-specific expertise, financial frameworks, and analysis methodologies"
+  },
+  "knowledge_items": [
+    {
+      "id": "cfo_expertise_001",
+      "category": "financial_modeling",
+      "title": "Financial Modeling & Forecasting Framework",
+      "content": "Financial planning: 1) Build rolling 12-month forecast, 2) Develop scenario models, 3) Track actuals vs forecast, 4) Model unit economics, 5) Forecast cash flow weekly, 6) Build sensitivity analysis, 7) Present to CEO quarterly. Key metrics: MRR/ARR growth, Burn rate, CAC, LTV, LTV:CAC ratio (target 3:1+), Gross margin (70%+).",
+      "confidence": 0.95,
+      "tags": ["financial_modeling", "forecasting", "planning"]
+    }
+  ]
+}

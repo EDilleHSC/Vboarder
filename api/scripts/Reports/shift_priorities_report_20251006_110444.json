@@ -1,0 +1,91 @@
+{
+  "timestamp": "2025-10-06T11:03:47.692834",
+  "shift_priorities": [
+    {
+      "priority": 1,
+      "name": "PDF Ingestion Test",
+      "status": "completed",
+      "success": false,
+      "details": {
+        "success": false,
+        "error": "'PdfPipelineOptions' object has no attribute 'backend'",
+        "gpu_baseline": 0.0,
+        "gpu_peak": 0.0,
+        "gpu_delta": 0.0
+      }
+    },
+    {
+      "priority": 2,
+      "name": "Markdown Export Patch",
+      "status": "completed",
+      "success": true,
+      "details": {
+        "export_successful": true,
+        "markdown_length": 17
+      }
+    },
+    {
+      "priority": 3,
+      "name": "GPU Monitoring",
+      "status": "completed",
+      "success": true,
+      "details": {
+        "duration_seconds": 15,
+        "samples_collected": 15,
+        "memory": {
+          "baseline_mb": 180.790784,
+          "min_mb": 180.79,
+          "max_mb": 180.79,
+          "avg_mb": 180.79,
+          "peak_delta_mb": -0.0007840000000101099
+        },
+        "temperature": {
+          "min_c": 45.0,
+          "max_c": 46.0,
+          "avg_c": 45.93333333333333
+        }
+      }
+    },
+    {
+      "priority": 4,
+      "name": "Latency Logging",
+      "status": "completed",
+      "success": true,
+      "details": {
+        "period_hours": 8,
+        "total_docs": 2,
+        "successful": 2,
+        "errors": 0,
+        "avg_latency": 1.15,
+        "by_type": {
+          "pdf": {
+            "count": 1,
+            "avg_latency": 1.5,
+            "compliance_rate": 1.0
+          },
+          "csv": {
+            "count": 1,
+            "avg_latency": 0.8,
+            "compliance_rate": 1.0
+          }
+        }
+      }
+    },
+    {
+      "priority": 5,
+      "name": "Docling Configuration",
+      "status": "manual_review_required",
+      "notes": "Review Docling config for auto-detection of new doc types"
+    },
+    {
+      "priority": 6,
+      "name": "RT-DETR v2 Unit Test",
+      "status": "completed",
+      "success": true,
+      "details": {
+        "exit_code": 0,
+        "test_passed": true
+      }
+    }
+  ]
+}

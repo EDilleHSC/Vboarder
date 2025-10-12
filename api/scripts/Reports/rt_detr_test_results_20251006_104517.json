@@ -1,0 +1,36 @@
+{
+  "timestamp": "2025-10-06T10:45:14.005388",
+  "model": "PekingU/rtdetr_r50vd_coco_o365",
+  "tests": [
+    {
+      "test": "cuda_available",
+      "passed": true,
+      "details": {
+        "cuda_available": true,
+        "device_name": "NVIDIA GeForce RTX 3060 Ti",
+        "cuda_version": "12.1"
+      }
+    },
+    {
+      "test": "model_loading",
+      "passed": true,
+      "details": {
+        "model_name": "PekingU/rtdetr_r50vd_coco_o365",
+        "load_time_seconds": 1.73,
+        "device": "cuda",
+        "model_params": 42891372
+      }
+    },
+    {
+      "test": "inference",
+      "passed": true,
+      "details": {
+        "inference_time_seconds": 0.712,
+        "output_shape": "torch.Size([1, 300, 80])",
+        "has_logits": true,
+        "has_boxes": true
+      }
+    },
+    {
+      "test": "performance_benchmark",
+      "passed": 

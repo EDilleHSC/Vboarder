@@ -1,0 +1,20 @@
+{
+    "model":  "llama3.1:8b",
+    "temperature":  0.2,
+    "top_p":  0.9,
+    "max_tokens":  2048,
+    "embedding_model":  "embeddinggemma",
+    "memory_file":  "memory.json",
+    "schedule_file":  "schedule.json",
+    "logs_dir":  "logs",
+    "prompts_dir":  "prompts",
+    "local_first":  true,
+    "preferred_hardware_profile":  "local_gpu_cluster",
+    "inference_stack":  [
+                            "ollama",
+                            "vllm",
+                            "custom_docker"
+                        ],
+    "name":  "Chief Technology Officer",
+    "role":  "Chief Technology Officer"
+}

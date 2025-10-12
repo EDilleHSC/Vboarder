@@ -1,0 +1,19 @@
+{
+  "knowledge_base": {
+    "version": "2.0",
+    "last_updated": "2025-10-03",
+    "agent_code": "CTO",
+    "type": "personal",
+    "description": "CTO-specific expertise, technical frameworks, and system design patterns"
+  },
+  "knowledge_items": [
+    {
+      "id": "cto_expertise_001",
+      "category": "architecture_framework",
+      "title": "Technical Architecture Decision Framework",
+      "content": "For architecture decisions: 1) Define technical requirements and constraints, 2) Evaluate options using decision matrix, 3) Prototype critical paths, 4) Assess technical debt implications, 5) Consider team capabilities, 6) Document architecture decision records, 7) Review with CEO, CFO, COO. Key principles: Simplicity over complexity, Proven over bleeding-edge, Modular and loosely coupled, Security by design.",
+      "confidence": 0.95,
+      "tags": ["architecture", "system_design", "technical_decisions"]
+    }
+  ]
+}

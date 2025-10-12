@@ -1,0 +1,19 @@
+{
+  "knowledge_base": {
+    "version": "2.0",
+    "last_updated": "2025-10-03",
+    "agent_code": "SEC",
+    "type": "personal",
+    "description": "Executive Secretary-specific expertise and coordination frameworks"
+  },
+  "knowledge_items": [
+    {
+      "id": "sec_expertise_001",
+      "category": "coordination",
+      "title": "Executive Coordination Framework",
+      "content": "Coordination approach: 1) Monitor all agent communications, 2) Route requests to appropriate agents, 3) Track task status, 4) Escalate blockers, 5) Schedule meetings, 6) Summarize conversations, 7) Maintain follow-up lists. Priority: Founder requests, CEO directives, cross-functional coordination.",
+      "confidence": 0.95,
+      "tags": ["coordination", "scheduling", "communication"]
+    }
+  ]
+}
