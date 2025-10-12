@@ -1,0 +1,7 @@
+{
+  "name": "EXAMPLE",
+  "role": "Example Officer",
+  "model": "llama3",
+  "version": "0.1.0",
+  "knowledge_files": []
+}
