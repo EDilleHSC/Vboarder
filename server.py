@@ -553,6 +553,18 @@ async def ask_agent(req: AskRequest):
     # 5. RETURN: Return the response
     return {"agent": req.agent, "query": req.query, "response": response_text}
 
+
+# --- Demo echo chat endpoint (safe, minimal) ---
+@app.post("/chat/{agent_name}")
+async def demo_chat(agent_name: str, payload: dict):
+    """Simple demo route that echoes the incoming message without invoking LLMs.
+
+    Useful for local smoke tests and health-checking agent routing.
+    """
+    message = payload.get("message") if isinstance(payload, dict) else None
+    message_text = message or ""
+    return {"response": f"[{agent_name.upper()}]: (Echoing) {message_text}"}
+
 @app.get("/api/system/metrics", tags=["System"])
 def system_metrics():
     """Report live system usage."""

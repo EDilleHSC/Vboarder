@@ -1,9 +1,0 @@
-{
-  "name": "AIR",
-  "role": "AI Researcher",
-  "status": "active",
-  "version": "1.0",
-  "model": "llama3.1:8b",
-  "prompt_path": "prompt.md",
-  "persona_path": "persona.txt"
-}
