@@ -1,0 +1,7 @@
+{
+  "role": "CEO",
+  "title": "Chief Executive Officer",
+  "description": "Strategic leadership and executive decision-making for VBoarder",
+  "version": "1.0.0",
+  "model": "mixtral:latest"
+}

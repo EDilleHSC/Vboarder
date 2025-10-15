@@ -1,50 +1,119 @@
-﻿[
-    {
-        "system_prompt":  "agents\\\\CEO\\\\system_prompt.txt",
-        "memory":  "agents\\\\CEO\\\\memory.json",
-        "name":  "CEO VBoarder",
-        "model":  "mixtral:latest",
-        "status":  "active",
-        "version":  "1.0.1"
-    },
-    {
-        "system_prompt":  "agents\\\\CTO\\\\system_prompt.txt",
-        "memory":  "agents\\\\CTO\\\\memory.json",
-        "name":  "CTO VBoarder",
-        "model":  "codellama:latest",
-        "status":  "active",
-        "version":  "1.0.0"
-    },
-    {
-        "system_prompt":  "agents\\CFO\\system.txt",
-        "memory":  "agents\\CFO\\memory.json",
-        "name":  "CFO",
-        "model":  "phi3:3.8b",
-        "status":  "active"
-    },
-    {
-        "system_prompt":  "agents\\COO\\system.txt",
-        "memory":  "agents\\COO\\memory.json",
-        "name":  "COO",
-        "model":  "llama3:8b",
-        "status":  "active"
-    },
-    {
-        "system_prompt":  "agents\\CMO\\system.txt",
-        "memory":  "agents\\CMO\\memory.json",
-        "name":  "CMO",
-        "model":  "qwen2:7b",
-        "status":  "active"
-    },
-    {
-        "agent":  "CLO",
-        "status":  "active",
-        "last_updated":  "2025-09-29T08:31:33.0350349-06:00"
-    },
-    {
-        "name":  "UNKNOWN",
-        "status":  "active",
-        "version":  "1.0",
-        "model":  "llama3.1:8b"
-    }
+[
+  {
+    "role": "AIR",
+    "title": "No Title",
+    "description": "No description.",
+    "model": "local-llm",
+    "temperature": 0.7,
+    "max_tokens": 2000,
+    "system_prompt": "agents/AIR/personas/system_detailed.txt",
+    "memory": "agents/AIR/memory.jsonl",
+    "persona_file": "agents/AIR/persona.json",
+    "config_file": "agents/AIR/config.json",
+    "enabled": true
+  },
+  {
+    "role": "CEO",
+    "title": "No Title",
+    "description": "No description.",
+    "model": "local-llm",
+    "temperature": 0.7,
+    "max_tokens": 2000,
+    "system_prompt": "agents/CEO/personas/system_detailed.txt",
+    "memory": "agents/CEO/memory.jsonl",
+    "persona_file": "agents/CEO/persona.json",
+    "config_file": "agents/CEO/config.json",
+    "enabled": true
+  },
+  {
+    "role": "CFO",
+    "title": "No Title",
+    "description": "No description.",
+    "model": "local-llm",
+    "temperature": 0.7,
+    "max_tokens": 2000,
+    "system_prompt": "agents/CFO/personas/system_detailed.txt",
+    "memory": "agents/CFO/memory.jsonl",
+    "persona_file": "agents/CFO/persona.json",
+    "config_file": "agents/CFO/config.json",
+    "enabled": true
+  },
+  {
+    "role": "CLO",
+    "title": "No Title",
+    "description": "No description.",
+    "model": "local-llm",
+    "temperature": 0.7,
+    "max_tokens": 2000,
+    "system_prompt": "agents/CLO/personas/system_detailed.txt",
+    "memory": "agents/CLO/memory.jsonl",
+    "persona_file": "agents/CLO/persona.json",
+    "config_file": "agents/CLO/config.json",
+    "enabled": true
+  },
+  {
+    "role": "CMO",
+    "title": "No Title",
+    "description": "No description.",
+    "model": "local-llm",
+    "temperature": 0.7,
+    "max_tokens": 2000,
+    "system_prompt": "agents/CMO/personas/system_detailed.txt",
+    "memory": "agents/CMO/memory.jsonl",
+    "persona_file": "agents/CMO/persona.json",
+    "config_file": "agents/CMO/config.json",
+    "enabled": true
+  },
+  {
+    "role": "COO",
+    "title": "No Title",
+    "description": "No description.",
+    "model": "local-llm",
+    "temperature": 0.7,
+    "max_tokens": 2000,
+    "system_prompt": "agents/COO/personas/system_detailed.txt",
+    "memory": "agents/COO/memory.jsonl",
+    "persona_file": "agents/COO/persona.json",
+    "config_file": "agents/COO/config.json",
+    "enabled": true
+  },
+  {
+    "role": "COS",
+    "title": "No Title",
+    "description": "No description.",
+    "model": "local-llm",
+    "temperature": 0.7,
+    "max_tokens": 2000,
+    "system_prompt": "agents/COS/personas/system_detailed.txt",
+    "memory": "agents/COS/memory.jsonl",
+    "persona_file": "agents/COS/persona.json",
+    "config_file": "agents/COS/config.json",
+    "enabled": true
+  },
+  {
+    "role": "CTO",
+    "title": "No Title",
+    "description": "No description.",
+    "model": "local-llm",
+    "temperature": 0.7,
+    "max_tokens": 2000,
+    "system_prompt": "agents/CTO/personas/system_detailed.txt",
+    "memory": "agents/CTO/memory.jsonl",
+    "persona_file": "agents/CTO/persona.json",
+    "config_file": "agents/CTO/config.json",
+    "enabled": true
+  },
+  {
+    "role": "SEC",
+    "title": "No Title",
+    "description": "No description.",
+    "model": "local-llm",
+    "temperature": 0.7,
+    "max_tokens": 2000,
+    "system_prompt": "agents/SEC/personas/system_detailed.txt",
+    "memory": "agents/SEC/memory.jsonl",
+    "persona_file": "agents/SEC/persona.json",
+    "config_file": "agents/SEC/config.json",
+    "enabled": true
+  }
 ]

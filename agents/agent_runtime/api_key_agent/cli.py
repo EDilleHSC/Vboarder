@@ -1,12 +1,25 @@
 # cli.py
 
 import argparse
-from core import API_PROVIDERS, validate_key_format, validate_key_live, save_key_to_env, detect_offline
+
+from core import (
+    API_PROVIDERS,
+    detect_offline,
+    save_key_to_env,
+    validate_key_format,
+    validate_key_live,
+)
+
 
 def run_cli():
     parser = argparse.ArgumentParser(description="Universal API Key Validator")
     parser.add_argument("--key", type=str, help="API key to validate")
-    parser.add_argument("--provider", type=str, choices=API_PROVIDERS.keys(), help="Specify provider (optional if autodetected)")
+    parser.add_argument(
+        "--provider",
+        type=str,
+        choices=API_PROVIDERS.keys(),
+        help="Specify provider (optional if autodetected)",
+    )
     parser.add_argument("--save", action="store_true", help="Save valid key to .env")
     args = parser.parse_args()
 
@@ -28,7 +41,9 @@ def run_cli():
         if validate_key_format(key, provider["pattern"]):
             matched = True
             print(f"🔍 Detected {name} format. Validating...")
-            ok, detail = validate_key_live(name, key, provider["validate_url"], provider["header"])
+            ok, detail = validate_key_live(
+                name, key, provider["validate_url"], provider["header"]
+            )
             if ok:
                 print(f"✅ {name} key is valid.")
                 if args.save:
@@ -40,6 +55,7 @@ def run_cli():
 
     if not matched:
         print("⚠️ Could not match key format. Try specifying --provider explicitly.")
+
 
 if __name__ == "__main__":
     run_cli()

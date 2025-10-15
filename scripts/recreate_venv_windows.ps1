@@ -25,9 +25,9 @@ if (-Not (Test-Path $venvCfg)) {
 
 $cfg = Get-Content $venvCfg | Out-String
 if ($cfg -match "home = (.+)") {
-    $pyhome = $matches[1].Trim()
-    Write-Host "Detected venv home: $pyhome"
-    if ($pyhome -like '/usr*' -or $pyhome -like '/mnt/*') {
+    $venvPythonHomePath = $matches[1].Trim()
+    Write-Host "Detected venv home: $venvPythonHomePath"
+    if ($venvPythonHomePath -like '/usr*' -or $venvPythonHomePath -like '/mnt/*') {
         Write-Host "This venv appears to have been created under WSL/Linux."
         if (-Not $Force) {
             $resp = Read-Host "Do you want to recreate a Windows venv here? (y/N)"
@@ -46,7 +46,7 @@ if ($cfg -match "home = (.+)") {
         exit 0
     }
     else {
-        Write-Host "Venv home looks Windows-native: $pyhome"
+        Write-Host "Venv home looks Windows-native: $venvPythonHomePath"
         Write-Host "Activate and run tests with: & .\.venv\Scripts\Activate.ps1; .\.venv\Scripts\python.exe -m pytest -q"
         exit 0
     }

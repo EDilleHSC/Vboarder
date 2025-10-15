@@ -3,11 +3,12 @@ query_agent_memory.py - Agent Memory Query Interface
 Query an agent's Qdrant memory using semantic similarity
 """
 
-from qdrant_client import QdrantClient
-from qdrant_client.http.exceptions import UnexpectedResponse
-import requests
 import sys
 import time
+
+import requests
+from qdrant_client import QdrantClient
+from qdrant_client.http.exceptions import UnexpectedResponse
 
 # Configuration
 OLLAMA_URL = "http://localhost:11434/api/embeddings"
@@ -26,7 +27,7 @@ def get_embedding(text: str, model: str = EMBED_MODEL) -> list:
         response = requests.post(
             OLLAMA_URL,
             json={"model": model, "prompt": text},
-            timeout=5  # Reduced from 20s
+            timeout=5,  # Reduced from 20s
         )
         response.raise_for_status()
         return response.json().get("embedding", [])
@@ -48,7 +49,9 @@ def collection_exists(collection_name: str) -> bool:
         return False
 
 
-def query_agent(agent_name: str, query_text: str, top_k: int = DEFAULT_TOP_K, silent: bool = False) -> list:
+def query_agent(
+    agent_name: str, query_text: str, top_k: int = DEFAULT_TOP_K, silent: bool = False
+) -> list:
     """Query agent's memory collection"""
     start_time = time.time()
     collection = f"agent_{agent_name.lower()}_memory"
@@ -57,7 +60,7 @@ def query_agent(agent_name: str, query_text: str, top_k: int = DEFAULT_TOP_K, si
     if not collection_exists(collection):
         print(f"ERROR: Agent '{agent_name}' has no memory collection")
         print(f"Collection '{collection}' not found in Qdrant")
-        print(f"\nAvailable agents:")
+        print("\nAvailable agents:")
         try:
             collections = client.get_collections().collections
             for c in collections:
@@ -77,10 +80,7 @@ def query_agent(agent_name: str, query_text: str, top_k: int = DEFAULT_TOP_K, si
     # Query Qdrant
     try:
         response = client.query_points(
-            collection_name=collection,
-            query=embedding,
-            limit=top_k,
-            with_payload=True
+            collection_name=collection, query=embedding, limit=top_k, with_payload=True
         )
     except Exception as e:
         print(f"ERROR: Qdrant query failed for collection '{collection}'")
@@ -104,9 +104,9 @@ def query_agent(agent_name: str, query_text: str, top_k: int = DEFAULT_TOP_K, si
     # Display results
     if not silent:
         print(f"\n{'='*70}")
-        print(f"Agent: {agent_name.upper()} | Query: \"{query_text}\" | Time: {elapsed}s")
+        print(f'Agent: {agent_name.upper()} | Query: "{query_text}" | Time: {elapsed}s')
         print(f"{'='*70}")
-        
+
         if not results:
             print("No results found.")
         else:
@@ -114,10 +114,12 @@ def query_agent(agent_name: str, query_text: str, top_k: int = DEFAULT_TOP_K, si
                 content_preview = f["content"][:200]
                 if len(f["content"]) > 200:
                     content_preview += "..."
-                
-                print(f"\n[{f['rank']}] Score: {f['score']:.4f} | File: {f['filename']}")
+
+                print(
+                    f"\n[{f['rank']}] Score: {f['score']:.4f} | File: {f['filename']}"
+                )
                 print(f"    {content_preview}")
-        
+
         print(f"\n{'='*70}")
         print(f"Retrieved {len(results)}/{top_k} results from {collection}")
         print("Note: Score 1.0 = perfect match, 0.0 = unrelated")
@@ -129,20 +131,18 @@ def main():
     if len(sys.argv) < 3:
         print("Usage: python query_agent_memory.py <AGENT> <QUERY>")
         print("\nExamples:")
-        print("  python query_agent_memory.py CEO \"Q1 revenue goals\"")
-        print("  python query_agent_memory.py CFO \"financial planning\"")
+        print('  python query_agent_memory.py CEO "Q1 revenue goals"')
+        print('  python query_agent_memory.py CFO "financial planning"')
         sys.exit(1)
 
     agent = sys.argv[1]
     query = " ".join(sys.argv[2:])
     query_agent(agent, query)
 
-
-
     main()
 
+
 import json
-import sys
 
 if __name__ == "__main__":
     try:
@@ -155,11 +155,7 @@ if __name__ == "__main__":
         top_result = f"Processed query for agent: {agent} → {query}"
 
         # ✅ Return structured JSON for FastAPI
-        print(json.dumps({
-            "agent": agent,
-            "response": top_result,
-            "status": "ok"
-        }))
+        print(json.dumps({"agent": agent, "response": top_result, "status": "ok"}))
 
     except Exception as e:
         print(json.dumps({"error": str(e)}))

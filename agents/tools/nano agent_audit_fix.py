@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
-import os, json, shutil
+import os
+import json
+import shutil
 from pathlib import Path
 
 AGENT_DIR = Path(".").resolve()
-AGENT_NAMES = [
-    "AIR", "CEO", "CFO", "CLO", "CMO", "COO", "COS", "CTO", "SEC"
-]
+AGENT_NAMES = ["AIR", "CEO", "CFO", "CLO", "CMO", "COO", "COS", "CTO", "SEC"]
 REQUIRED_FILES = [
-    "agent.json", "config.json", "memory.jsonl",
-    "persona.md", "prompt.md", "schedule.json"
+    "agent.json",
+    "config.json",
+    "memory.jsonl",
+    "persona.md",
+    "prompt.md",
+    "schedule.json",
 ]
 AUDIT_LOG = {
     "agents_checked": [],
@@ -18,6 +22,7 @@ AUDIT_LOG = {
 }
 os.makedirs("logs", exist_ok=True)
 os.makedirs(AUDIT_LOG["backup_path"], exist_ok=True)
+
 
 def repair_or_create(agent_name):
     agent_path = AGENT_DIR / agent_name
@@ -56,8 +61,10 @@ def repair_or_create(agent_name):
 
     # Generate README
     readme = agent_path / "README.md"
-    readme.write_text(f"# Agent: {agent_name}\n\nThis agent is auto-audited and ready.\n")
-    
+    readme.write_text(
+        f"# Agent: {agent_name}\n\nThis agent is auto-audited and ready.\n"
+    )
+
     # Backup cleaned agent
     backup_target = Path(AUDIT_LOG["backup_path"]) / agent_name
     if backup_target.exists():
@@ -67,6 +74,7 @@ def repair_or_create(agent_name):
     print(f"✅ Audited {agent_name}")
     if agent_repairs:
         print("   " + "\n   ".join(agent_repairs))
+
 
 for agent in AGENT_NAMES:
     repair_or_create(agent)

@@ -1,5 +1,6 @@
 import pynvml
 
+
 def log_gpu_metrics():
     try:
         pynvml.nvmlInit()
@@ -10,7 +11,7 @@ def log_gpu_metrics():
         return {
             "temperature_C": temp,
             "memory_used_MB": round(mem.used / 1024 / 1024, 2),
-            "memory_total_MB": round(mem.total / 1024 / 1024, 2)
+            "memory_total_MB": round(mem.total / 1024 / 1024, 2),
         }
     except Exception as e:
         return {"status": "gpu_error", "error": str(e)}

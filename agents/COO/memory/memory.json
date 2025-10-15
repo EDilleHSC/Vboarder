@@ -1,14 +1,8 @@
 {
-    "persona":  {
-                    "do_not":  [
-
-                               ],
-                    "tagline":  "",
-                    "goals":  [
-
-                              ]
-                },
-    "messages":  [
-
-                 ]
+  "persona": {
+    "do_not": [],
+    "tagline": "",
+    "goals": []
+  },
+  "messages": []
 }

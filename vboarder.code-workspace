@@ -1,44 +1,83 @@
 {
   "folders": [
     {
+      "name": "🚀 VBoarder Root",
       "path": "."
     },
     {
+      "name": "📡 Backend API",
       "path": "api"
     },
     {
-      "path": "coord"
-    },
-    {
+      "name": "🤖 AI Agents",
       "path": "agents"
     },
     {
+      "name": "🔄 Coordination",
+      "path": "coord"
+    },
+    {
+      "name": "🎨 Frontend",
+      "path": "vboarder_frontend/nextjs_space"
+    },
+    {
+      "name": "🛠️ Tools & Scripts",
+      "path": "tools"
+    },
+    {
+      "name": "📚 Documentation",
       "path": "docs"
     }
   ],
   "settings": {
-    // --- Editor setup ---
+    // ========================================
+    // 🎨 Editor Settings
+    // ========================================
     "editor.tabSize": 4,
     "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
     "files.trimTrailingWhitespace": true,
     "files.insertFinalNewline": true,
+    "files.encoding": "utf8",
+    "files.eol": "\n",
 
-    // --- Python & environment ---
-    "python.defaultInterpreterPath": "/usr/bin/python3",
+    // ========================================
+    // 🐍 Python Settings
+    // ========================================
+    "python.defaultInterpreterPath": "${workspaceFolder:🚀 VBoarder Root}/.venv-wsl/bin/python",
     "python.analysis.autoImportCompletions": true,
     "python.analysis.typeCheckingMode": "basic",
     "python.terminal.activateEnvironment": true,
+    "python.formatting.provider": "black",
+    "python.linting.enabled": true,
+    "python.linting.ruffEnabled": true,
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "[python]": {
+      "editor.defaultFormatter": "ms-python.black-formatter",
+      "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+      }
+    },
 
-    // --- Terminal ---
+    // ========================================
+    // 🖥️ Terminal Settings
+    // ========================================
     "terminal.integrated.defaultProfile.linux": "bash",
-    "terminal.integrated.cwd": "/mnt/d/ai/projects/vboarder",
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.cwd": "${workspaceFolder:🚀 VBoarder Root}",
     "terminal.integrated.profiles.linux": {
       "bash": {
         "path": "/bin/bash"
       }
     },
 
-    // --- Copilot Integration ---
+    // ========================================
+    // 🤖 Copilot Settings
+    // ========================================
     "github.copilot.chat.experimental.enable": true,
     "github.copilot.enable": {
       "*": true,
@@ -50,49 +89,182 @@
       "context": {
         "include": [
           "copilot-instructions.md",
+          ".github/copilot-instructions.md",
           "api/**",
           "coord/**",
-          "agents/**"
+          "agents/**",
+          "docs/**"
         ]
       }
     },
 
-    // --- Default file view ---
+    // ========================================
+    // 🎨 Workbench Settings
+    // ========================================
     "workbench.startupEditor": "readme",
     "workbench.editor.enablePreview": false,
-    "workbench.colorTheme": "Default Dark+"
+    "workbench.colorTheme": "Default Dark+",
+    "workbench.settings.openDefaultSettings": true,
+    "workbench.settings.useSplitJSON": true,
+    "workbench.colorCustomizations": {
+      "[Default Dark+]": {
+        "activityBar.background": "#1a1a2e",
+        "titleBar.activeBackground": "#16213e",
+        "titleBar.activeForeground": "#e0e0e0"
+      }
+    },
+
+    // ========================================
+    // 🔍 Search & Files Settings
+    // ========================================
+    "search.exclude": {
+      "**/.venv": true,
+      "**/.venv-wsl": true,
+      "**/node_modules": true,
+      "**/__pycache__": true,
+      "**/archive": true,
+      "**/backup": true,
+      "**/.pytest_cache": true,
+      "**/.mypy_cache": true,
+      "**/.ruff_cache": true
+    },
+    "files.watcherExclude": {
+      "**/.venv/**": true,
+      "**/.venv-wsl/**": true,
+      "**/node_modules/**": true,
+      "**/__pycache__/**": true
+    },
+    "files.associations": {
+      "*.env.*": "dotenv",
+      "*.jsonl": "jsonlines",
+      "Makefile": "makefile",
+      ".pre-commit-config.yaml": "yaml"
+    },
+    "powershell.cwd": "🚀 VBoarder Root"
   },
   "extensions": {
     "recommendations": [
       "github.copilot",
+      "github.copilot-chat",
       "ms-python.python",
+      "ms-python.black-formatter",
+      "charliermarsh.ruff",
       "ms-toolsai.jupyter",
-      "ms-azuretools.vscode-docker"
+      "ms-azuretools.vscode-docker",
+      "esbenp.prettier-vscode",
+      "bradlc.vscode-tailwindcss",
+      "dbaeumer.vscode-eslint",
+      "ms-vscode.makefile-tools",
+      "tamasfe.even-better-toml",
+      "redhat.vscode-yaml"
     ]
   },
   "launch": {
     "configurations": [
       {
-        "name": "Run FastAPI (Backend)",
-        "type": "python",
+        "name": "🚀 Backend API (Uvicorn)",
+        "type": "debugpy",
         "request": "launch",
         "module": "uvicorn",
         "args": [
           "api.main:app",
           "--reload",
+          "--host",
+          "127.0.0.1",
           "--port",
           "3738"
         ],
-        "jinja": true
+        "cwd": "${workspaceFolder:🚀 VBoarder Root}",
+        "env": {
+          "PYTHONPATH": "${workspaceFolder:🚀 VBoarder Root}"
+        },
+        "jinja": true,
+        "justMyCode": false,
+        "console": "integratedTerminal"
       },
       {
-        "name": "Run Scheduler",
-        "type": "python",
+        "name": "📊 DevDash",
+        "type": "debugpy",
         "request": "launch",
-        "program": "coord/scheduler.py",
+        "program": "${workspaceFolder:🚀 VBoarder Root}/tools/dev/devdash.py",
+        "cwd": "${workspaceFolder:🚀 VBoarder Root}",
         "env": {
-          "INTERVAL": "30"
+          "PYTHONPATH": "${workspaceFolder:🚀 VBoarder Root}"
+        },
+        "console": "integratedTerminal"
+      },
+      {
+        "name": "🔄 Scheduler",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder:🚀 VBoarder Root}/coord/scheduler.py",
+        "cwd": "${workspaceFolder:🚀 VBoarder Root}",
+        "env": {
+          "INTERVAL": "30",
+          "PYTHONPATH": "${workspaceFolder:🚀 VBoarder Root}"
+        },
+        "console": "integratedTerminal"
+      },
+      {
+        "name": "🧪 Pytest (Current File)",
+        "type": "debugpy",
+        "request": "launch",
+        "module": "pytest",
+        "args": ["${file}", "-v"],
+        "cwd": "${workspaceFolder:🚀 VBoarder Root}",
+        "env": {
+          "PYTHONPATH": "${workspaceFolder:🚀 VBoarder Root}"
+        },
+        "console": "integratedTerminal"
+      }
+    ],
+    "compounds": [
+      {
+        "name": "🔄 Full Stack (Backend + DevDash)",
+        "configurations": ["🚀 Backend API (Uvicorn)", "📊 DevDash"],
+        "stopAll": true,
+        "presentation": {
+          "hidden": false,
+          "group": "Full Stack",
+          "order": 1
         }
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "🚀 Start Backend",
+        "type": "shell",
+        "command": "make backend",
+        "problemMatcher": [],
+        "presentation": {
+          "reveal": "always",
+          "panel": "new"
+        }
+      },
+      {
+        "label": "🧪 Run Tests",
+        "type": "shell",
+        "command": "make test",
+        "group": {
+          "kind": "test",
+          "isDefault": true
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🧪 Smoke Tests",
+        "type": "shell",
+        "command": "make smoke-test",
+        "problemMatcher": []
+      },
+      {
+        "label": "🎨 Format Code",
+        "type": "shell",
+        "command": "make format",
+        "problemMatcher": []
       }
     ]
   }

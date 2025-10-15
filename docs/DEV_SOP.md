@@ -1,6 +1,7 @@
-# 🧭 VBOARDER DEVELOPMENT SOP  
-**Version:** 1.0  
-**Last Updated:** $(date +%F)  
+# 🧭 VBOARDER DEVELOPMENT SOP
+
+**Version:** 1.0
+**Last Updated:** $(date +%F)
 
 ---
 
@@ -16,8 +17,8 @@ vboarder/
 ├── requirements.txt ← Dependencies list
 └── README.md
 
-
 ### Example `.env` file
+
 ```env
 LLM_MODE=local
 LOCAL_URL=http://localhost:11434
@@ -145,11 +146,12 @@ curl -X POST "http://localhost:8000/api/ask" -H "Content-Type: application/json"
 🧠 VBoarder is built for persistent intelligence.
 Follow this SOP to maintain stable memory systems, predictable behavior, and safe continuous evolution.
 
-Built by: VBoarder Core Team  
-Maintainer: You 🧠  
+Built by: VBoarder Core Team
+Maintainer: You 🧠
 
 
 ---
 
-Would you like me to automatically create this as `docs/DEV_SOP.md` in your repo (so you can commit and push it)?  
+Would you like me to automatically create this as `docs/DEV_SOP.md` in your repo (so you can commit and push it)?
 I can also generate a **short CLI version** (a `.bash` quick reference) if you want a lightweight terminal guide.
+```

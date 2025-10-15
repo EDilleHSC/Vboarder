@@ -1,9 +1,11 @@
 # agent_runtime/api_keys.py
 
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
+
 
 def get_api_keys():
     return {
@@ -11,8 +13,9 @@ def get_api_keys():
         "anthropic": os.getenv("ANTHROPIC_API_KEY", ""),
         "groq": os.getenv("GROQ_API_KEY", ""),
         "huggingface": os.getenv("HUGGINGFACE_API_KEY", ""),
-        "ollama_url": os.getenv("OLLAMA_URL", "http://localhost:11434")
+        "ollama_url": os.getenv("OLLAMA_URL", "http://localhost:11434"),
     }
+
 
 def validate_api_keys(required_keys=None):
     keys = get_api_keys()

@@ -7,6 +7,7 @@ LOG_PATH = "./logs/logic_audit_log.json"
 
 os.makedirs("logs", exist_ok=True)
 
+
 def audit_agent_paths():
     print("🧠 Auditing agent path logic...")
     audit_result = {}
@@ -26,6 +27,7 @@ def audit_agent_paths():
     with open(LOG_PATH, "w") as f:
         json.dump(audit_result, f, indent=2)
     print(f"✅ Agent path audit saved to: {LOG_PATH}")
+
 
 if __name__ == "__main__":
     audit_agent_paths()

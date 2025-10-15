@@ -14,12 +14,12 @@ def stream_ollama(prompt, model, context=None):
     messages.append({"role": "user", "content": prompt})
 
     process = subprocess.Popen(
-    ["ollama", "run", model],
-    stdin=subprocess.PIPE,
-    stdout=subprocess.PIPE,
-    stderr=subprocess.PIPE,
-    text=True
-)
+        ["ollama", "run", model],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
 
     input_payload = json.dumps({"messages": messages})
     stdout, stderr = process.communicate(input=input_payload)

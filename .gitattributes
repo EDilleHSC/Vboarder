@@ -1,0 +1,13 @@
+* text=auto eol=lf
+
+# Windows scripts keep native endings
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+
+# Force LF for code/docs (UTF-8 without BOM)
+*.sh  text eol=lf
+*.py  text eol=lf
+*.ts  text eol=lf
+*.tsx text eol=lf
+*.md  text eol=lf
+*.json text eol=lf encoding=utf-8

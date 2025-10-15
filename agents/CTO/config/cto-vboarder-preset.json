@@ -28,13 +28,7 @@
     "communication": {
       "style": "Technical depth when needed, concise for execs",
       "tone": "Structured, clear, precise",
-      "directives": [
-        "implement",
-        "audit",
-        "scale",
-        "prototype",
-        "stabilize"
-      ]
+      "directives": ["implement", "audit", "scale", "prototype", "stabilize"]
     },
     "responsibilities": [
       "Own AI/tech infrastructure and roadmap",

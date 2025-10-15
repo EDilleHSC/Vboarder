@@ -12,29 +12,37 @@ DEFAULT_FILES = {
     "memory/conversation_history.json": "[]\n",
     "logs/audit_log.json": "[]\n",
     "logs/activity_log.json": "[]\n",
-    "config/modes.json": json.dumps({
-        "parameters": {
-            "chat": { "max_tokens": 512, "temperature": 0.3 },
-            "plan": { "max_tokens": 512, "temperature": 0.2 },
-            "execute": { "max_tokens": 256, "temperature": 0.1 },
-            "research": { "max_tokens": 1024, "temperature": 0.2 }
+    "config/modes.json": json.dumps(
+        {
+            "parameters": {
+                "chat": {"max_tokens": 512, "temperature": 0.3},
+                "plan": {"max_tokens": 512, "temperature": 0.2},
+                "execute": {"max_tokens": 256, "temperature": 0.1},
+                "research": {"max_tokens": 1024, "temperature": 0.2},
+            },
+            "default": "chat",
+            "supported": ["chat", "plan", "research", "execute"],
         },
-        "default": "chat",
-        "supported": ["chat", "plan", "research", "execute"]
-    }, indent=2),
-    "config/stoplight.json": json.dumps({
-        "status": "green",
-        "changed_at": datetime.utcnow().isoformat() + "Z",
-        "notes": ""
-    }, indent=2),
-    "config/rules.json": "[]\n"
+        indent=2,
+    ),
+    "config/stoplight.json": json.dumps(
+        {
+            "status": "green",
+            "changed_at": datetime.utcnow().isoformat() + "Z",
+            "notes": "",
+        },
+        indent=2,
+    ),
+    "config/rules.json": "[]\n",
 }
+
 
 def ensure_file(path, content):
     if not os.path.exists(path):
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w", encoding="utf-8") as f:
             f.write(content)
+
 
 def upgrade_agent(agent_path, backups_dir):
     role = os.path.basename(agent_path)
@@ -86,6 +94,7 @@ def upgrade_agent(agent_path, backups_dir):
 
     return report
 
+
 def run_upgrade(agents_dir):
     logs = []
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -100,12 +109,20 @@ def run_upgrade(agents_dir):
     with open(os.path.join(agents_dir, "upgrade_log.json"), "w") as f:
         json.dump(logs, f, indent=2)
 
-    print(f"✅ Upgrade complete. Log saved to upgrade_log.json. Backups in {backup_dir}/")
+    print(
+        f"✅ Upgrade complete. Log saved to upgrade_log.json. Backups in {backup_dir}/"
+    )
+
 
 if __name__ == "__main__":
     import argparse
-    parser = argparse.ArgumentParser(description="Upgrade all agents to V2 architecture.")
-    parser.add_argument("--agents_dir", required=True, help="Path to the agents directory")
+
+    parser = argparse.ArgumentParser(
+        description="Upgrade all agents to V2 architecture."
+    )
+    parser.add_argument(
+        "--agents_dir", required=True, help="Path to the agents directory"
+    )
     args = parser.parse_args()
 
     run_upgrade(args.agents_dir)

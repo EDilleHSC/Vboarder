@@ -12,7 +12,16 @@ EXTENSIONS_TO_MOVE = {".py", ".ps1", ".md", ".json", ".txt"}
 
 # Agent folders to skip (assumes top-level folders with 3-letter roles)
 AGENT_FOLDERS = {
-    "AIR", "CEO", "CFO", "COO", "CMO", "CLO", "COS", "CTO", "SEC", "backups"
+    "AIR",
+    "CEO",
+    "CFO",
+    "COO",
+    "CMO",
+    "CLO",
+    "COS",
+    "CTO",
+    "SEC",
+    "backups",
 }
 
 # Files to exclude explicitly
@@ -22,7 +31,7 @@ moved_files = []
 
 for filename in os.listdir(ROOT_DIR):
     src_path = os.path.join(ROOT_DIR, filename)
-    
+
     # Skip folders (agents) and unwanted files
     if os.path.isdir(src_path) and filename in AGENT_FOLDERS:
         continue

@@ -21,7 +21,7 @@ Write-Host "Archive root: $archiveRoot"
 # Find directories explicitly named 'backups' (avoid pattern-matches that include 'backups' in other names)
 $agentsBackups = Get-ChildItem -Directory -Recurse -Depth 6 -Force -ErrorAction SilentlyContinue | Where-Object { $_.Name -eq 'backups' }
 if (-not $agentsBackups) {
-    Write-Host "No 'backups' directories found under the repository." 
+    Write-Host "No 'backups' directories found under the repository."
     exit 0
 }
 
@@ -95,4 +95,4 @@ foreach ($dir in $agentsBackups) {
     }
 }
 
-Write-Host "Done." 
+Write-Host "Done."

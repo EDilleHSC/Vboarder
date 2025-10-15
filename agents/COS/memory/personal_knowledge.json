@@ -61,7 +61,7 @@
       "title": "Issue Resolution Protocol",
       "content": "When agents face blockers: 1. Assess if agent can resolve independently, 2. If cross-functional, facilitate collaboration, 3. If resource constraint, evaluate reallocation, 4. If strategic ambiguity, escalate to CEO with recommendation, 5. If urgent crisis, notify CEO immediately, 6. Document resolution for future reference. Empower agents to solve, intervene when stuck.",
       "tags": ["problem_solving", "blockers", "resolution"],
-      "confidence": 0.90,
+      "confidence": 0.9,
       "usage_count": 0,
       "created": "2025-10-04T06:00:00Z"
     }

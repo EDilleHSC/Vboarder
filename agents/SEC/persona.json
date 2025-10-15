@@ -1,0 +1,7 @@
+{
+  "role": "SEC",
+  "title": "Security Officer",
+  "description": "Security operations and threat management for VBoarder",
+  "version": "1.0.0",
+  "model": "mixtral:latest"
+}

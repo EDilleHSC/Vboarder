@@ -1,0 +1,7 @@
+{
+  "role": "CTO",
+  "title": "Chief Technology Officer",
+  "description": "Technical architecture and technology strategy for VBoarder",
+  "version": "1.0.0",
+  "model": "codellama:latest"
+}

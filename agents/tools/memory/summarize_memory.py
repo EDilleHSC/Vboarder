@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-import json
 from pathlib import Path
 from datetime import datetime
+
 
 def summarize_memory(agent_dir: Path):
     """Create a readable summary of an agent’s memory.jsonl"""
@@ -29,12 +29,14 @@ def summarize_memory(agent_dir: Path):
     summary_file.write_text("\n".join(summary), encoding="utf-8")
     print(f"🧠  {agent_dir.name}: summary written")
 
+
 def main():
     base = Path(__file__).resolve().parents[1]
     for agent in base.iterdir():
         if agent.is_dir() and agent.name.isupper():
             summarize_memory(agent)
     print("\n✅  All memory summaries updated.")
+
 
 if __name__ == "__main__":
     main()

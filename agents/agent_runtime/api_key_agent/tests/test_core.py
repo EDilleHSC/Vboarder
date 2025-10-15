@@ -1,20 +1,22 @@
 # tests/test_core.py
 
-import pytest
-from core import validate_key_format, validate_key_live, API_PROVIDERS
 from unittest.mock import patch
+
+from core import API_PROVIDERS, validate_key_format, validate_key_live
 
 VALID_KEYS = {
     "OpenAI": "sk-abc12345678901234567890123456789",
     "Anthropic": "sk-ant-abc12345678901234567890123456789",
     "Groq": "gsk_abc1234567890123456789012345678901234567",
-    "HuggingFace": "hf_abc1234567890123456789012345678"
+    "HuggingFace": "hf_abc1234567890123456789012345678",
 }
+
 
 def test_validate_key_format():
     for name, key in VALID_KEYS.items():
         pattern = API_PROVIDERS[name]["pattern"]
         assert validate_key_format(key, pattern), f"{name} format failed"
+
 
 @patch("core.requests.get")
 def test_validate_key_live_success(mock_get):
@@ -26,6 +28,7 @@ def test_validate_key_live_success(mock_get):
         valid, detail = validate_key_live(name, key, url, header_func)
         assert valid is True
         assert detail == "Success"
+
 
 @patch("core.requests.get")
 def test_validate_key_live_failure(mock_get):

@@ -18,6 +18,7 @@ load_dotenv(dotenv_path=".env", override=True)
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
 DEFAULT_MODEL = os.getenv("OLLAMA_MODEL", "llama3:8b")
 
+
 # === Core Chat Function ===
 def stream_ollama(prompt, model, context=None):
     """Send a streaming chat request to Ollama."""

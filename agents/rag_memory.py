@@ -1,21 +1,23 @@
 import os
-import json
 import asyncpg
 import openai
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient
-from qdrant_client.models import Filter, FieldCondition, MatchValue, PointStruct
 
 load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL")  # e.g. postgresql://user:pass@localhost:5432/vboarder
+DATABASE_URL = os.getenv(
+    "DATABASE_URL"
+)  # e.g. postgresql://user:pass@localhost:5432/vboarder
 QDRANT_URL = os.getenv("QDRANT_URL", "http://localhost:6333")
 EMBED_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
+
 # Map agent -> qdrant collection name
 def agent_collection(agent: str) -> str:
     return f"agent_{agent.lower()}_memory"
+
 
 async def init_db_pool():
     return await asyncpg.create_pool(
@@ -25,13 +27,16 @@ async def init_db_pool():
         command_timeout=60,
     )
 
+
 def get_qdrant():
     return QdrantClient(url=QDRANT_URL)
+
 
 async def embed_text(text: str):
     # Swap with Ollama if desired
     resp = await openai.embeddings.create(model=EMBED_MODEL, input=text)
     return resp.data[0].embedding
+
 
 async def search_knowledge_base(pool, agent: str, query: str, top_k: int = 5):
     """

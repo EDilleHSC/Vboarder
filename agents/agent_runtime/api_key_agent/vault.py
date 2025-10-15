@@ -1,6 +1,7 @@
 # vault.py
 
 import os
+
 from cryptography.fernet import Fernet
 
 VAULT_FILE = os.path.expanduser("~/.apikey_vault")

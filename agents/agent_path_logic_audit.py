@@ -2,20 +2,26 @@ import os
 import json
 from datetime import datetime
 
-REQUIRED_FILES = [
-    "agent.json", "prompt.md", "persona.md", "README.md"
-]
+REQUIRED_FILES = ["agent.json", "prompt.md", "persona.md", "README.md"]
 REQUIRED_DIRS = ["memory", "logs", "config"]
 
-MEMORY_FILES = ["memory.json", "conversation_history.json", "personal_knowledge.json", "office_knowledge.json", "task_state.json"]
+MEMORY_FILES = [
+    "memory.json",
+    "conversation_history.json",
+    "personal_knowledge.json",
+    "office_knowledge.json",
+    "task_state.json",
+]
+
 
 def is_valid_json(path):
     try:
-        with open(path, 'r') as f:
+        with open(path, "r") as f:
             json.load(f)
         return True
     except:
         return False
+
 
 def audit_agent(agent_path):
     agent_name = os.path.basename(agent_path)
@@ -34,11 +40,14 @@ def audit_agent(agent_path):
         for mf in MEMORY_FILES:
             mpath = os.path.join(memory_path, mf)
             if os.path.exists(mpath):
-                report["memory"][mf] = "✅ Valid" if is_valid_json(mpath) else "❌ Invalid JSON"
+                report["memory"][mf] = (
+                    "✅ Valid" if is_valid_json(mpath) else "❌ Invalid JSON"
+                )
             else:
                 report["memory"][mf] = "❌ Missing"
 
     return report
+
 
 def main():
     base_dir = os.getcwd()
@@ -58,6 +67,7 @@ def main():
         json.dump(audit_log, f, indent=2)
 
     print(f"\n✅ Audit completed. Report saved to {out_path}")
+
 
 if __name__ == "__main__":
     main()

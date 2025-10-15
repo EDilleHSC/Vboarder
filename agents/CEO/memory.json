@@ -1,4 +1,23 @@
 {
-  "facts": [],
-  "notes": []
+  "facts": [
+    "Q3 revenue exceeded targets by 15%",
+    "New product launch planned for Q4 2025",
+    "Board meeting scheduled for November 1st"
+  ],
+  "messages": [
+    {
+      "sender": "user",
+      "message": "What's our company focus?",
+      "timestamp": "2025-10-13T10:00:00Z"
+    },
+    {
+      "sender": "CEO",
+      "message": "Our focus is sustainable growth and innovation.",
+      "timestamp": "2025-10-13T10:01:00Z"
+    }
+  ],
+  "context": {
+    "company": "VBoarder",
+    "fiscal_year": 2025
+  }
 }
