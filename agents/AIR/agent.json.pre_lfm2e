@@ -1,0 +1,27 @@
+{
+  "name": "AIR",
+  "role": "AI Researcher",
+  "status": "active",
+  "version": "1.0",
+  "model": "llama3:8b",
+  "prompt_path": "prompt.md",
+  "persona_path": "persona.md",
+  "memory_path": "memory/memory.json",
+  "modes_path": "config/modes.json",
+  "log_path": "logs/audit_log.json",
+  "stoplight_path": "config/stoplight.json",
+  "endpoint": "http://localhost:11434/api/generate",
+  "embedding": {
+    "model": "embedding-300",
+    "endpoint": "http://localhost:11435/embed"
+  },
+  "auth": {
+    "mode": "local"
+  },
+  "logs": {
+    "audit": "logs/audit_log.json",
+    "activity": "logs/activity_log.json"
+  },
+  "updated_at": "2025-10-09T01:49:52.963576Z",
+  "slot": "slot:a"
+}

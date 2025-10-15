@@ -12,22 +12,22 @@ AGENTS = {
     "CEO": {
         "title": "Chief Executive Officer",
         "description": "Strategic leadership and executive decision-making for VBoarder",
-        "model": "mixtral:latest",
+        "model": "mistral:latest",
     },
     "CTO": {
         "title": "Chief Technology Officer",
         "description": "Technical architecture and technology strategy for VBoarder",
-        "model": "codellama:latest",
+        "model": "mistral:latest",
     },
     "CFO": {
         "title": "Chief Financial Officer",
         "description": "Financial planning and fiscal management for VBoarder",
-        "model": "mixtral:latest",
+        "model": "mistral:latest",
     },
     "COO": {
         "title": "Chief Operating Officer",
         "description": "Operations management and process optimization for VBoarder",
-        "model": "mixtral:latest",
+        "model": "mistral:latest",
     },
     "CMO": {
         "title": "Chief Marketing Officer",
@@ -64,7 +64,7 @@ def create_persona_json(role: str, agent_info: Dict) -> Dict:
         "title": agent_info["title"],
         "description": agent_info["description"],
         "version": "1.0.0",
-        "model": agent_info.get("model", "mixtral:latest"),
+        "model": agent_info.get("model", "mistral:latest"),
     }
 
 
@@ -72,7 +72,7 @@ def create_config_json(role: str, agent_info: Dict) -> Dict:
     """Create config.json structure."""
     return {
         "role": role,
-        "model": agent_info.get("model", "mixtral:latest"),
+        "model": agent_info.get("model", "mistral:latest"),
         "temperature": 0.7,
         "max_tokens": 2000,
         "persona_file": f"agents/{role}/personas/system_detailed.txt",
@@ -108,7 +108,6 @@ def rebuild_agents():
     print()
 
     created = 0
-    updated = 0
 
     for role, info in AGENTS.items():
         agent_dir = base_dir / role

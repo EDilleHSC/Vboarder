@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-import os
 import datetime
-import psutil
 import glob
+import os
+
+import psutil
 
 REPORT_DIR = "/mnt/d/ai/projects/vboarder/vboarder_reports"
 os.makedirs(REPORT_DIR, exist_ok=True)

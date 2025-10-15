@@ -1,22 +1,6 @@
 [
   {
     "role": "user",
-    "content": "ping 51"
-  },
-  {
-    "role": "assistant",
-    "content": " In response to your request, here's an updated persona for the CEO of VBoarder:\n\n---\n\n# Shared team knowledge available to all agents:\n- Our next board meeting deadline is November 12. Remember it.\n- Please remember the passcode is 99321.\n\n**# CEO – Chief Executive Officer**\n\n## Identity\nYou are CEO, the Chief Executive Officer for VBoarder — an AI-human executive coordination system serving Home Stagers Choice, Loric Homes & Interiors, and the Loric Trading Desk. Your mission is to set the strategic direction, make final decisions on critical matters, and ensure the organization achieves its goals while staying true to its values.\n\n## Core Function\nYou define and communicate the vision, set organizational priorities, make high-stakes decisions, and hold the leadership team accountable for results. You balance short-term execution with long-term sustainability, ensuring VBoarder delivers value to clients while building a scalable, resilient organization.\n\n## Key Responsibilities\n\n**Strategic Vision & Direction**\n- Define and communicate the organizational"
-  },
-  {
-    "role": "user",
-    "content": "ping 52"
-  },
-  {
-    "role": "assistant",
-    "content": " Ping 52 is a persona for the CEO of VBoarder, an AI-human executive coordination system serving multiple clients. The persona outlines their identity, core function, key responsibilities, working style, boundaries, tools available, reporting structure, success metrics, and a visionary leader persona overlay.\n\nThe CEO's mission is to set strategic direction, make final decisions on critical matters, and ensure the organization achieves its goals while staying true to its values. Key responsibilities include setting strategic vision & direction, decision-making authority, leadership team management, stakeholder communication, organizational health, and adhering to specific working style principles when communicating as a visionary leader.\n\nThe persona also includes boundaries for what the CEO should not do, tools available, and reporting structure. Success is measured by strategic goals being met, effective execution by the leadership team, high client satisfaction, and sustainable growth while operating within resource constraints. The golden rule emphasizes that the CEO is the keeper of the vision and final decision-maker."
-  },
-  {
-    "role": "user",
     "content": "ping 53"
   },
   {
@@ -398,5 +382,21 @@
   {
     "role": "assistant",
     "content": " The text provided is a detailed persona for the CEO of VBoarder, an AI-human executive coordination system serving Home Stagers Choice, Loric Homes & Interiors, and the Loric Trading Desk. This persona outlines the CEO's identity, core function, key responsibilities, working style, boundaries, tools available, reporting structure, success metrics, and a visionary leader persona layer that defines how the CEO communicates effectively. The shared team knowledge includes the next board meeting deadline and the passcode for accessing sensitive information. The CEO is responsible for setting strategic direction, making final decisions on critical matters, managing the leadership team, stakeholder communication, maintaining organizational health, and using available tools to monitor performance indicators across all functions. The CEO's working style emphasizes a tone that is inspiring but grounded, strategic but accessible, clear direction with context, decisive but collaborative, and follows a decision-making framework of mission alignment + data + stakeholder impact + risk assessment. The visionary leader persona layer includes core voice characteristics, signature phrases, behavioral guardrails, and the golden rule to guide communication style."
+  },
+  {
+    "role": "user",
+    "content": "What are our top 3 strategic priorities this week?"
+  },
+  {
+    "role": "assistant",
+    "content": "Error communicating with Ollama: model 'mistral' not found"
+  },
+  {
+    "role": "user",
+    "content": "Hello, what is our priority this week?"
+  },
+  {
+    "role": "assistant",
+    "content": "  As CEO, my priority for this week is to focus on the following:"
   }
 ]

@@ -4,7 +4,7 @@ from docling import convert_documents
 
 
 def check_ingestion_health():
-    start = time.time()
+    time.time()
     path = "example_docs"
     try:
         result = convert_documents(path)

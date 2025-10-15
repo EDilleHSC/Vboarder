@@ -66,7 +66,7 @@ create_missing_file() {
   "role": "${agent_role}",
   "title": "${agent_role} Agent",
   "description": "AI agent for VBoarder",
-  "model": "mixtral:latest",
+  "model": "mistral:latest",
   "temperature": 0.7,
   "max_tokens": 2000
 }
@@ -183,13 +183,13 @@ for agent_dir in "$AGENTS_DIR"/*; do
     if command -v jq &> /dev/null; then
         title=$(jq -r '.title // "'"${ROLE_UPPER} Agent"'"' "$CONFIG" 2>/dev/null || echo "${ROLE_UPPER} Agent")
         description=$(jq -r '.description // "AI agent for VBoarder"' "$CONFIG" 2>/dev/null || echo "AI agent for VBoarder")
-        model=$(jq -r '.model // "mixtral:latest"' "$CONFIG" 2>/dev/null || echo "mixtral:latest")
+        model=$(jq -r '.model // "mistral:latest"' "$CONFIG" 2>/dev/null || echo "mistral:latest")
         temp=$(jq -r '.temperature // 0.7' "$CONFIG" 2>/dev/null || echo "0.7")
     else
         # Fallback if jq not available
         title="${ROLE_UPPER} Agent"
         description="AI agent for VBoarder"
-        model="mixtral:latest"
+        model="mistral:latest"
         temp="0.7"
     fi
 

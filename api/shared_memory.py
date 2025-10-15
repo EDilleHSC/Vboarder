@@ -3,7 +3,64 @@ import re
 import time
 from pathlib import Path
 
-SHARED_FILE = Path(r"D:\ai\projects\vboarder\data\shared\knowledge.json")
+# Use relative path from project root
+PROJECT_ROOT = Path(__file__).parent.parent
+SHARED_FILE = PROJECT_ROOT / "data" / "shared" / "knowledge.json"
+
+# WSL-safe memory path for individual agent memories
+MEMORY_PATH = Path.home() / ".vboarder" / "memory"
+
+
+class SharedMemory:
+    """Shared memory system for cross-agent communication"""
+
+    def __init__(self):
+        # Ensure memory directory exists
+        MEMORY_PATH.mkdir(parents=True, exist_ok=True)
+        SHARED_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+    def load_memory(self, agent=None, quadrant=None):
+        """Load memory for specific agent and quadrant"""
+        if not agent:
+            return load_shared()
+
+        # Load agent-specific memory
+        agent_memory_file = MEMORY_PATH / f"{agent.lower()}_memory.json"
+        if not agent_memory_file.exists():
+            return []
+
+        try:
+            data = json.loads(agent_memory_file.read_text(encoding="utf-8"))
+            if quadrant and isinstance(data, dict):
+                return data.get(quadrant, [])
+            return data
+        except Exception:
+            return []
+
+    def save_memory(self, agent, data, quadrant=None):
+        """Save memory for specific agent and quadrant"""
+        agent_memory_file = MEMORY_PATH / f"{agent.lower()}_memory.json"
+
+        if quadrant:
+            # Load existing data and update specific quadrant
+            existing = {}
+            if agent_memory_file.exists():
+                try:
+                    existing = json.loads(agent_memory_file.read_text(encoding="utf-8"))
+                except Exception:
+                    existing = {}
+            existing[quadrant] = data
+            data = existing
+
+        agent_memory_file.write_text(
+            json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
+
+
+def load_memory(agent=None, quadrant=None):
+    """Convenience function for loading memory"""
+    sm = SharedMemory()
+    return sm.load_memory(agent, quadrant)
 
 
 def _read():

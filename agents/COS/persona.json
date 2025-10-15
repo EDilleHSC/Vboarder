@@ -3,5 +3,5 @@
   "title": "Chief of Staff",
   "description": "Coordination and strategic execution for VBoarder",
   "version": "1.0.0",
-  "model": "mixtral:latest"
+  "model": "lfm2e:latest"
 }

@@ -466,7 +466,7 @@ git push origin main
 | 10. Validate all      | 1 min       | [ ]    |
 | **TOTAL**             | **~10 min** | [ ]    |
 
-**Actual Time:** ****\_\_**** (fill in when complete)
+**Actual Time:** \***\*\_\_\*\*** (fill in when complete)
 
 ---
 

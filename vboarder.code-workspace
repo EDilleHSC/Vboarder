@@ -216,6 +216,17 @@
           "PYTHONPATH": "${workspaceFolder:🚀 VBoarder Root}"
         },
         "console": "integratedTerminal"
+      },
+      {
+        "name": "🧠 Reasoning Kernel Test",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder:🚀 VBoarder Root}/reasoning_kernel.py",
+        "cwd": "${workspaceFolder:🚀 VBoarder Root}",
+        "env": {
+          "PYTHONPATH": "${workspaceFolder:🚀 VBoarder Root}"
+        },
+        "console": "integratedTerminal"
       }
     ],
     "compounds": [
@@ -265,6 +276,58 @@
         "type": "shell",
         "command": "make format",
         "problemMatcher": []
+      },
+      {
+        "label": "⚡ Perfect Dev Setup",
+        "type": "shell",
+        "command": "wsl",
+        "args": [
+          "bash",
+          "-c",
+          "cd /mnt/d/ai/projects/vboarder && echo '🚀 VBoarder Perfect Dev Setup' && source .venv-wsl/bin/activate && echo '✅ Virtual environment activated' && ./vboarder_status.sh && echo '🎯 Ready to code! Backend will start in 3 seconds...' && sleep 3 && uvicorn api.main:app --host 127.0.0.1 --port 3738 --reload"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": true,
+          "panel": "dedicated",
+          "showReuseMessage": false,
+          "clear": true
+        },
+        "isBackground": true,
+        "problemMatcher": []
+      },
+      {
+        "label": "🧪 Quick Reasoning Test",
+        "type": "shell",
+        "command": "wsl",
+        "args": [
+          "bash",
+          "-c",
+          "cd /mnt/d/ai/projects/vboarder && ./quick_test.sh 'Test workspace integration'"
+        ],
+        "group": "test",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": true,
+          "panel": "shared"
+        }
+      },
+      {
+        "label": "📊 Full System Status",
+        "type": "shell",
+        "command": "wsl",
+        "args": [
+          "bash",
+          "-c",
+          "cd /mnt/d/ai/projects/vboarder && ./vboarder_status.sh"
+        ],
+        "group": "test"
       }
     ]
   }

@@ -1,0 +1,85 @@
+{
+  "agents": {
+    "CEO": {
+      "role": "CEO",
+      "title": "Chief Executive Officer",
+      "model": "lfm2e:latest",
+      "slot": "slot:b",
+      "description": "Strategic leadership and executive decision-making",
+      "enabled": true
+    },
+    "CTO": {
+      "role": "CTO",
+      "title": "Chief Technology Officer",
+      "model": "lfm2e:latest",
+      "slot": "slot:b",
+      "description": "Technology strategy and engineering leadership",
+      "enabled": true
+    },
+    "CFO": {
+      "role": "CFO",
+      "title": "Chief Financial Officer",
+      "model": "mistral:latest",
+      "slot": "slot:a",
+      "description": "Financial planning and fiscal management",
+      "enabled": true
+    },
+    "COO": {
+      "role": "COO",
+      "title": "Chief Operating Officer",
+      "model": "mistral:latest",
+      "slot": "slot:a",
+      "description": "Operations and process optimization",
+      "enabled": true
+    },
+    "CLO": {
+      "role": "CLO",
+      "title": "Chief Legal Officer",
+      "model": "mistral:latest",
+      "slot": "slot:a",
+      "description": "Legal affairs and compliance management",
+      "enabled": true
+    },
+    "CMO": {
+      "role": "CMO",
+      "title": "Chief Marketing Officer",
+      "model": "mistral:latest",
+      "slot": "slot:a",
+      "description": "Marketing strategy and brand management",
+      "enabled": true
+    },
+    "COS": {
+      "role": "COS",
+      "title": "Chief of Staff",
+      "model": "mistral:latest",
+      "slot": "slot:a",
+      "description": "Strategic coordination and executive support",
+      "enabled": true
+    },
+    "SEC": {
+      "role": "SEC",
+      "title": "Security Officer",
+      "model": "mistral:latest",
+      "slot": "slot:a",
+      "description": "Security and risk management",
+      "enabled": true
+    },
+    "AIR": {
+      "role": "AIR",
+      "title": "AI Research Lead",
+      "model": "mistral:latest",
+      "slot": "slot:a",
+      "description": "AI research and development coordination",
+      "enabled": true
+    }
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "last_updated": "$(date -Iseconds)",
+    "total_agents": 9,
+    "slot_distribution": {
+      "slot:a": 7,
+      "slot:b": 2
+    }
+  }
+}

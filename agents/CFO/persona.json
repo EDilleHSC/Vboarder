@@ -3,5 +3,5 @@
   "title": "Chief Financial Officer",
   "description": "Financial planning and fiscal management for VBoarder",
   "version": "1.0.0",
-  "model": "mixtral:latest"
+  "model": "lfm2e:latest"
 }

@@ -3,7 +3,7 @@
   "role": "Chief of Staff",
   "status": "active",
   "version": "1.0",
-  "model": "llama3:8b",
+  "model": "lfm2e:latest",
   "prompt_path": "prompt.md",
   "persona_path": "persona.md",
   "memory_path": "memory/memory.json",
@@ -22,5 +22,6 @@
     "audit": "logs/audit_log.json",
     "activity": "logs/activity_log.json"
   },
-  "updated_at": "2025-10-09T01:49:53.004991Z"
+  "updated_at": "2025-10-09T01:49:53.004991Z",
+  "slot": "slot:b"
 }

@@ -1,7 +1,7 @@
 {
   "role": "SEC",
-  "title": "Security Officer",
-  "description": "Security operations and threat management for VBoarder",
+  "title": "Executive Secretary",
+  "description": "Executive support and administrative coordination for VBoarder leadership",
   "version": "1.0.0",
-  "model": "mixtral:latest"
+  "model": "lfm2e:latest"
 }

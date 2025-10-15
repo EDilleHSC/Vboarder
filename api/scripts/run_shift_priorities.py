@@ -35,7 +35,7 @@ class ShiftPrioritiesRunner:
 
             tester = PDFIngestTester(self.test_pdf)
             baseline = tester.check_gpu_status()
-            result = tester.test_pdf_ingestion()
+            tester.test_pdf_ingestion()
             tester.monitor_gpu_memory(baseline)
             report = tester.generate_report()
 

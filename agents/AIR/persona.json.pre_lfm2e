@@ -1,0 +1,7 @@
+{
+  "role": "AIR",
+  "title": "AI Research Lead",
+  "description": "AI research and innovation for VBoarder",
+  "version": "1.0.0",
+  "model": "mistral:latest"
+}

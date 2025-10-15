@@ -24,7 +24,7 @@ def generate_markdown():
     now = datetime.datetime.now()
     date_str = now.strftime("%A, %B %d %Y - %I:%M %p")
     file_str = now.strftime("%Y-%m-%d")
-    guardian_entry = get_latest_guardian_entry()
+    get_latest_guardian_entry()
 
     markdown = f"""\
 # 🧠 CTO SHIFT CHANGE REPORT

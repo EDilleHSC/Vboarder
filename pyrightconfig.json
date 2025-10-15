@@ -1,0 +1,14 @@
+{
+  "include": ["."],
+  "venvPath": "./.venv-wsl",
+  "venv": ".",
+  "reportMissingImports": false,
+  "reportMissingModuleSource": false,
+  "reportImportCycles": false,
+  "executionEnvironments": [
+    {
+      "root": "./api",
+      "extraPaths": ["./agents", "./routes", "./utils", "./tools", "./scripts"]
+    }
+  ]
+}

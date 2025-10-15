@@ -250,9 +250,9 @@ This will:
 
 ## 📊 Test Results Summary
 
-**Date Tested:** ******\_\_\_******
-**Tester:** ******\_\_\_******
-**Environment:** ******\_\_\_******
+**Date Tested:** **\*\***\_\_\_**\*\***
+**Tester:** **\*\***\_\_\_**\*\***
+**Environment:** **\*\***\_\_\_**\*\***
 
 ### Overall Status
 

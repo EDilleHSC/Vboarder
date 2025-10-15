@@ -3,5 +3,5 @@
   "title": "Chief Marketing Officer",
   "description": "Marketing strategy and brand development for VBoarder",
   "version": "1.0.0",
-  "model": "mixtral:latest"
+  "model": "lfm2e:latest"
 }

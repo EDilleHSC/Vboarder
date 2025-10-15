@@ -1,8 +1,9 @@
+from datetime import datetime
+
+import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import uvicorn
-from datetime import datetime
 
 app = FastAPI(title="VBoarder Backend API", version="2.0")
 

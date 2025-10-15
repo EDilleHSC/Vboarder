@@ -3,5 +3,5 @@
   "title": "Chief Legal Officer",
   "description": "Legal compliance and risk management for VBoarder",
   "version": "1.0.0",
-  "model": "mixtral:latest"
+  "model": "lfm2e:latest"
 }

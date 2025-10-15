@@ -1,6 +1,6 @@
 import os
-import time
 import subprocess
+import time
 
 AGENTS = ["CEO", "CTO", "CFO", "CLO", "CMO", "COO", "COS", "SEC"]
 INTERVAL = int(os.environ.get("INTERVAL", 60))

@@ -31,11 +31,10 @@ if (-not $ollamaProcess) {
 }
 
 # Kill old backend if running
-$backendPort = Get-NetTCPConnection -LocalPort 3738 -ErrorAction SilentlyContinue
-if ($backendPort) {
+$existingConnection = Get-NetTCPConnection -LocalPort 3738 -ErrorAction SilentlyContinue
+if ($null -ne $existingConnection) {
     Write-Host "🧹 Cleaning up old backend on port 3738..." -ForegroundColor Yellow
-    $processId = $backendPort.OwningProcess
-    Stop-Process -Id $processId -Force -ErrorAction SilentlyContinue
+    Stop-Process -Id $existingConnection.OwningProcess -Force -ErrorAction SilentlyContinue
     Start-Sleep -Seconds 1
 }
 

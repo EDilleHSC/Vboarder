@@ -1,0 +1,7 @@
+{
+  "role": "CLO",
+  "title": "Chief Legal Officer",
+  "description": "Legal compliance and risk management for VBoarder",
+  "version": "1.0.0",
+  "model": "mistral:latest"
+}

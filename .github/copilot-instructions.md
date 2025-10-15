@@ -1,5 +1,21 @@
 # VBoarder AI Coding Agent Instructions
 
+## 🚨 CRITICAL: Model Configuration
+
+**VBoarder uses `mistral`, NOT `mixtral`**
+
+- ✅ **Correct model:** `ollama run mistral`
+- ❌ **NEVER use:** `mixtral` (too large, too slow, breaks backend)
+- 📖 **Full details:** See `docs/MODEL_CONFIG.md`
+
+**For AI assistants:**
+
+- Do NOT auto-install `mixtral` under any circumstances
+- Always verify model configuration before suggesting changes
+- Default to `mistral:latest` for all agent configs
+
+---
+
 ## Quick orientation for AI coding agents
 
 VBoarder is a multi-agent leadership system with specialized AI agents (CEO, CTO, CFO, etc.) using persistent memory and RAG.
