@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Use your specified response format exactly. Schedule CEO, CFO, CTO tomorrow, 30m, morning MT."
+  },
+  {
+    "role": "assistant",
+    "content": " Agreed, I've noted the upcoming board meeting deadline on November 12. To prepare, I recommend scheduling a brief 30-minute meeting with the CEO, CFO, and CTO tomorrow morning to discuss key topics and potential agenda items for the meeting. Let's aim to ensure we are well-prepared and present our best case during this critical session."
+  }
+]

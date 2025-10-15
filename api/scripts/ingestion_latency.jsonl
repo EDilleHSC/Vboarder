@@ -1,0 +1,2 @@
+{"timestamp": "2025-10-06T10:46:40.906744", "doc_name": "test.pdf", "doc_type": "pdf", "latency_seconds": 1.5, "target_seconds": 2.0, "meets_target": true, "error": null, "metadata": {"size_mb": 1.2}}
+{"timestamp": "2025-10-06T10:46:42.407656", "doc_name": "data.csv", "doc_type": "csv", "latency_seconds": 0.8, "target_seconds": 2.0, "meets_target": true, "error": null, "metadata": {"rows": 10000}}

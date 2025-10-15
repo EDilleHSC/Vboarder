@@ -1,0 +1,110 @@
+[
+  {
+    "agent": "AIR",
+    "changes": [
+      "\ud83d\udd27 Set model to llama3:8b",
+      "\ud83d\udd27 Set endpoint to http://localhost:11434/api/generate",
+      "\ud83d\udd27 Updated embedding config",
+      "\ud83d\udd10 Set auth to local",
+      "\ud83d\udcdc Set logs paths",
+      "\ud83d\udd52 Updated timestamp",
+      "\u2705 Saved updated agent.json"
+    ]
+  },
+  {
+    "agent": "CEO",
+    "changes": [
+      "\ud83d\udd27 Set model to llama3:8b",
+      "\ud83d\udd27 Set endpoint to http://localhost:11434/api/generate",
+      "\ud83d\udd27 Updated embedding config",
+      "\ud83d\udd10 Set auth to local",
+      "\ud83d\udcdc Set logs paths",
+      "\ud83d\udd52 Updated timestamp",
+      "\u2705 Saved updated agent.json"
+    ]
+  },
+  {
+    "agent": "CFO",
+    "changes": [
+      "\ud83d\udd27 Set model to llama3:8b",
+      "\ud83d\udd27 Set endpoint to http://localhost:11434/api/generate",
+      "\ud83d\udd27 Updated embedding config",
+      "\ud83d\udd10 Set auth to local",
+      "\ud83d\udcdc Set logs paths",
+      "\ud83d\udd52 Updated timestamp",
+      "\u2705 Saved updated agent.json"
+    ]
+  },
+  {
+    "agent": "CLO",
+    "changes": [
+      "\ud83d\udd27 Set model to llama3:8b",
+      "\ud83d\udd27 Set endpoint to http://localhost:11434/api/generate",
+      "\ud83d\udd27 Updated embedding config",
+      "\ud83d\udd10 Set auth to local",
+      "\ud83d\udcdc Set logs paths",
+      "\ud83d\udd52 Updated timestamp",
+      "\u2705 Saved updated agent.json"
+    ]
+  },
+  {
+    "agent": "CMO",
+    "changes": [
+      "\ud83d\udd27 Set model to llama3:8b",
+      "\ud83d\udd27 Set endpoint to http://localhost:11434/api/generate",
+      "\ud83d\udd27 Updated embedding config",
+      "\ud83d\udd10 Set auth to local",
+      "\ud83d\udcdc Set logs paths",
+      "\ud83d\udd52 Updated timestamp",
+      "\u2705 Saved updated agent.json"
+    ]
+  },
+  {
+    "agent": "COO",
+    "changes": [
+      "\ud83d\udd27 Set model to llama3:8b",
+      "\ud83d\udd27 Set endpoint to http://localhost:11434/api/generate",
+      "\ud83d\udd27 Updated embedding config",
+      "\ud83d\udd10 Set auth to local",
+      "\ud83d\udcdc Set logs paths",
+      "\ud83d\udd52 Updated timestamp",
+      "\u2705 Saved updated agent.json"
+    ]
+  },
+  {
+    "agent": "COS",
+    "changes": [
+      "\ud83d\udd27 Set model to llama3:8b",
+      "\ud83d\udd27 Set endpoint to http://localhost:11434/api/generate",
+      "\ud83d\udd27 Updated embedding config",
+      "\ud83d\udd10 Set auth to local",
+      "\ud83d\udcdc Set logs paths",
+      "\ud83d\udd52 Updated timestamp",
+      "\u2705 Saved updated agent.json"
+    ]
+  },
+  {
+    "agent": "CTO",
+    "changes": [
+      "\ud83d\udd27 Set model to llama3:8b",
+      "\ud83d\udd27 Set endpoint to http://localhost:11434/api/generate",
+      "\ud83d\udd27 Updated embedding config",
+      "\ud83d\udd10 Set auth to local",
+      "\ud83d\udcdc Set logs paths",
+      "\ud83d\udd52 Updated timestamp",
+      "\u2705 Saved updated agent.json"
+    ]
+  },
+  {
+    "agent": "SEC",
+    "changes": [
+      "\ud83d\udd27 Set model to llama3:8b",
+      "\ud83d\udd27 Set endpoint to http://localhost:11434/api/generate",
+      "\ud83d\udd27 Updated embedding config",
+      "\ud83d\udd10 Set auth to local",
+      "\ud83d\udcdc Set logs paths",
+      "\ud83d\udd52 Updated timestamp",
+      "\u2705 Saved updated agent.json"
+    ]
+  }
+]

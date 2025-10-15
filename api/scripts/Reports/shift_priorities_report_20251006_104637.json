@@ -1,0 +1,44 @@
+{
+  "timestamp": "2025-10-06T10:46:37.108739",
+  "shift_priorities": [
+    {
+      "priority": 1,
+      "name": "PDF Ingestion Test",
+      "status": "error",
+      "error": "cannot import name 'PDFIngestTester' from 'pdf_test_suite' (D:\\ai\\projects\\vboarder\\api\\scripts\\pdf_test_suite.py)"
+    },
+    {
+      "priority": 2,
+      "name": "Markdown Export Patch",
+      "status": "error",
+      "error": "cannot import name 'safe_convert_to_markdown' from 'markdown_export_patch' (D:\\ai\\projects\\vboarder\\api\\scripts\\markdown_export_patch.py)"
+    },
+    {
+      "priority": 3,
+      "name": "GPU Monitoring",
+      "status": "error",
+      "error": "No module named 'torch'"
+    },
+    {
+      "priority": 4,
+      "name": "Latency Logging",
+      "status": "completed",
+      "success": true,
+      "details": {
+        "error": "Log file not found"
+      }
+    },
+    {
+      "priority": 5,
+      "name": "Docling Configuration",
+      "status": "manual_review_required",
+      "notes": "Review Docling config for auto-detection of new doc types"
+    },
+    {
+      "priority": 6,
+      "name": "RT-DETR v2 Unit Test",
+      "status": "error",
+      "error": "No module named 'torch'"
+    }
+  ]
+}

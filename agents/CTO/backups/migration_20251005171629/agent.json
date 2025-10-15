@@ -1,0 +1,8 @@
+﻿{
+    "system_prompt":  "agents\\\\CTO\\\\system_prompt.txt",
+    "memory":  "agents\\\\CTO\\\\memory.json",
+    "name":  "CTO VBoarder",
+    "model":  "codellama:latest",
+    "status":  "active",
+    "version":  "1.0.0"
+}

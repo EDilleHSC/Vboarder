@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Schedule a 30-minute sync tomorrow with CEO, CFO, and CTO. Prefer morning MT."
+  },
+  {
+    "role": "assistant",
+    "content": " Schedule a 30-minute meeting tomorrow at the convenience of all parties for a pre-board discussion. Propose a morning time slot to ensure optimal attendance and efficiency, focusing on key points leading up to the November 12th board meeting."
+  }
+]

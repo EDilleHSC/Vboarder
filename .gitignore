@@ -1,0 +1,61 @@
+﻿# Python virtual environment
+.venv/
+env/
+__pycache__/
+```ignore
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# Python cache and packages
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.mypy_cache/
+.pytest_cache/
+
+# Local config / secrets
+.env
+env_vars/
+
+# Logs
+*.log
+logs/
+backend_*.logO
+
+# Node / frontend
+node_modules/
+.next/
+dist/
+build/
+
+# IDE/editor/project noise
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Long nested backups
+agents/SEC/backups/
+
+# Data / database
+data/pg_data/
+data/qdrant_storage/
+data/flowise_data/
+data/*.db
+data/*.sqlite
+
+# WSL placeholder
+wsl
+
+# Copilot local config (we track .copilot/config.json intentionally)
+# If you want to ignore all copilot state locally, uncomment the next line
+# .copilot/
+
+```

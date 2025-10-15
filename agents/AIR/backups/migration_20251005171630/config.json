@@ -1,0 +1,130 @@
+{
+    "performance":  {
+                        "cache_responses":  true,
+                        "rate_limit_per_minute":  60,
+                        "lazy_load":  true,
+                        "parallel_requests":  3,
+                        "cache_size":  100
+                    },
+    "monitoring":  {
+                       "log_file":  "D:/ai/services/vboarder/data/agents/AIR/v3/logs/agent.log",
+                       "alert_on_errors":  true,
+                       "log_level":  "INFO",
+                       "logging_enabled":  true,
+                       "metrics_enabled":  true,
+                       "health_check_interval_seconds":  60,
+                       "alert_threshold":  5
+                   },
+    "capabilities":  {
+                         "can_create_tasks":  true,
+                         "can_summarize":  true,
+                         "can_schedule":  true,
+                         "can_route_tasks":  true,
+                         "can_escalate":  true,
+                         "can_use_tools":  true,
+                         "can_access_memory":  true,
+                         "can_modify_calendar":  false
+                     },
+    "metadata":  {
+                     "version":  "1.0.0",
+                     "code":  "AIR",
+                     "last_updated":  null,
+                     "name":  "AI Intelligence Router",
+                     "description":  "Manages scheduling, communication triage, and administrative workflows.",
+                     "status":  "active",
+                     "created":  null,
+                     "role":  "AI Intelligence Router (Knowledge Librarian)"
+                 },
+    "access_control":  {
+                           "knowledge_access":  {
+                                                    "can_write":  [
+                                                                      "SEC_personal",
+                                                                      "task_logs"
+                                                                  ],
+                                                    "cannot_access":  [
+
+                                                                      ],
+                                                    "can_read":  [
+                                                                     "office_knowledge",
+                                                                     "shared"
+                                                                 ]
+                                                }
+                       },
+    "prompts":  {
+                    "system_detailed_file":  "agents/AIR/prompts/system_detailed.txt",
+                    "system_prompt_file":  "agents/AIR/prompts/system_prompt.txt",
+                    "cache_ttl_seconds":  3600,
+                    "version":  "1.0.0",
+                    "cache_enabled":  true
+                },
+    "schedule":  {
+                     "auto_execute":  false,
+                     "timezone":  "UTC",
+                     "file":  "agents/AIR/schedule.json",
+                     "enabled":  false
+                 },
+    "memory":  {
+                   "personal_memory_file":  "D:/ai/services/vboarder/data/agents/AIR/v3/personal_knowledge.json",
+                   "office_memory_file":  "D:/ai/services/vboarder/data/agents/AIR/v3/office_knowledge.json",
+                   "conversation_history_file":  "D:/ai/services/vboarder/data/agents/AIR/v3/conversation_history.json",
+                   "task_state_file":  "D:/ai/services/vboarder/data/agents/AIR/v3/task_state.json",
+                   "max_memory_items":  1000,
+                   "enabled":  true,
+                   "backend":  "file",
+                   "auto_cleanup":  true,
+                   "retention_days":  90,
+                   "qdrant_url":  null,
+                   "qdrant_collection":  null,
+                   "embedding_model":  "embeddinggemma:300m"
+               },
+    "persona":  null,
+    "runtime":  {
+                    "retry_delay_seconds":  2,
+                    "retry_attempts":  3,
+                    "fallback_model":  null,
+                    "max_tokens":  2048,
+                    "temperature":  0.4,
+                    "model":  "mistral:latest",
+                    "timeout_seconds":  30
+                },
+    "collaboration":  {
+                          "mode":  "cos_routed",
+                          "can_be_invoked_by":  [
+                                                    "all"
+                                                ],
+                          "can_invoke":  [
+                                             "COS",
+                                             "CEO",
+                                             "CTO",
+                                             "CFO",
+                                             "COO",
+                                             "CMO",
+                                             "CLO",
+                                             "AIR"
+                                         ],
+                          "manages_agents":  [
+
+                                             ],
+                          "notify_human":  false,
+                          "routing_priority":  3,
+                          "reports_to":  [
+                                             "COS"
+                                         ],
+                          "can_escalate_to":  [
+                                                  "COS",
+                                                  "CEO"
+                                              ]
+                      },
+    "tools":  {
+                  "tool_timeout_seconds":  10,
+                  "available_tools":  [
+                                          "calendar_manager",
+                                          "email_router",
+                                          "task_tracker",
+                                          "meeting_summarizer"
+                                      ],
+                  "enabled":  true
+              },
+    "name":  "AI Intelligence Router",
+    "role":  "AI Intelligence Router (Knowledge Librarian)"
+}

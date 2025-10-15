@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "What project are we working on?"
+  },
+  {
+    "role": "assistant",
+    "content": " We are working on Project Alpha."
+  }
+]

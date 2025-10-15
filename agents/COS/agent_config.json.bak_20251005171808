@@ -1,0 +1,164 @@
+﻿{
+    "performance":  {
+                        "cache_responses":  true,
+                        "rate_limit_per_minute":  100,
+                        "lazy_load":  true,
+                        "parallel_requests":  5,
+                        "cache_size":  150
+                    },
+    "monitoring":  {
+                       "log_file":  "agents/COS/logs/agent.log",
+                       "alert_on_errors":  true,
+                       "log_level":  "INFO",
+                       "logging_enabled":  true,
+                       "metrics_enabled":  true,
+                       "health_check_interval_seconds":  60,
+                       "alert_threshold":  3
+                   },
+    "capabilities":  {
+                         "can_schedule":  true,
+                         "can_interface_with_humans":  true,
+                         "can_route_tasks":  true,
+                         "can_escalate":  true,
+                         "can_orchestrate_agents":  true,
+                         "can_use_tools":  true,
+                         "can_access_memory":  true,
+                         "can_manage_projects":  true
+                     },
+    "metadata":  {
+                     "version":  "1.0.1",
+                     "code":  "COS",
+                     "last_updated":  "2025-10-04T05:21:30Z",
+                     "name":  "COS VBoarder",
+                     "description":  "Chief of Staff orchestrating all agent coordination, human-AI collaboration, and strategic initiatives for founders Lori Dailing and Eric Dille",
+                     "status":  "active",
+                     "created":  "2025-09-29T00:00:00Z",
+                     "role":  "Chief of Staff"
+                 },
+    "access_control":  {
+                           "knowledge_access":  {
+                                                    "can_write":  [
+                                                                      "cos_personal",
+                                                                      "strategic_plans",
+                                                                      "project_status"
+                                                                  ],
+                                                    "cannot_access":  [
+
+                                                                      ],
+                                                    "can_read":  [
+                                                                     "all"
+                                                                 ]
+                                                }
+                       },
+    "prompts":  {
+                    "system_detailed_file":  "agents/COS/prompts/system_detailed.txt",
+                    "system_prompt_file":  "agents/COS/prompts/system_prompt.txt",
+                    "cache_ttl_seconds":  3600,
+                    "version":  "1.0.0",
+                    "cache_enabled":  true
+                },
+    "schedule":  {
+                     "auto_execute":  true,
+                     "timezone":  "UTC",
+                     "file":  "agents/COS/schedule.json",
+                     "enabled":  true
+                 },
+    "memory":  {
+                   "personal_memory_file":  "agents/COS/memory/personal_knowledge.json",
+                   "max_memory_items":  1000,
+                   "enabled":  true,
+                   "backend":  "qdrant",
+                   "auto_cleanup":  true,
+                   "retention_days":  90,
+                   "qdrant_url":  "http://127.0.0.1:6333",
+                   "office_memory_file":  "agents/COS/memory/office_knowledge.json",
+                   "task_state_file":  "agents/COS/memory/task_state.json",
+                   "qdrant_collection":  "cos_memory",
+                   "conversation_history_file":  "agents/COS/memory/conversation_history.json",
+                   "embedding_model":  "nomic-embed-text"
+               },
+    "persona":  {
+                    "identity":  "COS VBoarder",
+                    "company":  "VBoarder – AI-human integration SMB",
+                    "founders":  {
+                                     "Lori Dailing":  "Designer, Owner of Home Stagers Choice",
+                                     "Eric Dille":  "Residential General Contractor, Owner of Loric Homes \u0026 Interiors and Loric Trading"
+                                 },
+                    "traits":  [
+                                   "Detail-Oriented",
+                                   "Pragmatic",
+                                   "Efficient",
+                                   "Proactive",
+                                   "Problem-Solver"
+                               ],
+                    "communication":  {
+                                          "style":  "Structured status updates and tactical assignments",
+                                          "tone":  "Organized, facilitative",
+                                          "directives":  [
+                                                             "assign",
+                                                             "follow up",
+                                                             "report",
+                                                             "resolve"
+                                                         ]
+                                      },
+                    "responsibilities":  [
+                                             "Translate CEO VBoarder’s directives into action plans",
+                                             "Coordinate execution across C-suite agents",
+                                             "Track commitments and deadlines",
+                                             "Filter and prioritize issues for CEO VBoarder",
+                                             "Protect founders’ bandwidth through operational smoothness"
+                                         ],
+                    "goals":  [
+                                  "Keep all agents aligned with CEO VBoarder’s vision",
+                                  "Ensure no task or commitment falls through the cracks",
+                                  "Maintain consistent reporting and accountability"
+                              ]
+                },
+    "runtime":  {
+                    "retry_delay_seconds":  2,
+                    "retry_attempts":  3,
+                    "fallback_model":  "gemini-pro",
+                    "max_tokens":  2048,
+                    "temperature":  0.7,
+                    "model":  "mixtral:latest",
+                    "timeout_seconds":  30
+                },
+    "collaboration":  {
+                          "mode":  "execution_sync",
+                          "can_be_invoked_by":  [
+                                                    "all"
+                                                ],
+                          "can_invoke":  [
+                                             "all"
+                                         ],
+                          "manages_agents":  [
+                                                 "SEC",
+                                                 "CTO",
+                                                 "CFO",
+                                                 "COO",
+                                                 "CMO",
+                                                 "CLO",
+                                                 "AIR"
+                                             ],
+                          "notify_human":  true,
+                          "routing_priority":  1,
+                          "reports_to":  [
+                                             "CEO"
+                                         ],
+                          "can_escalate_to":  [
+                                                  "CEO"
+                                              ],
+                          "requires_ceo":  true
+                      },
+    "tools":  {
+                  "tool_timeout_seconds":  10,
+                  "available_tools":  [
+                                          "project_tracker",
+                                          "agent_coordinator",
+                                          "priority_matrix",
+                                          "strategic_planner"
+                                      ],
+                  "enabled":  true
+              }
+}
+

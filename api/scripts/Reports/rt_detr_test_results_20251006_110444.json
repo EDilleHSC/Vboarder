@@ -1,0 +1,64 @@
+{
+  "timestamp": "2025-10-06T11:04:42.821357",
+  "model": "PekingU/rtdetr_r50vd_coco_o365",
+  "tests": [
+    {
+      "test": "cuda_available",
+      "passed": true,
+      "details": {
+        "cuda_available": true,
+        "device_name": "NVIDIA GeForce RTX 3060 Ti",
+        "cuda_version": "12.1"
+      }
+    },
+    {
+      "test": "model_loading",
+      "passed": true,
+      "details": {
+        "model_name": "PekingU/rtdetr_r50vd_coco_o365",
+        "load_time_seconds": 1.16,
+        "device": "cuda",
+        "model_params": 42891372
+      }
+    },
+    {
+      "test": "inference",
+      "passed": true,
+      "details": {
+        "inference_time_seconds": 0.14,
+        "output_shape": "torch.Size([1, 300, 80])",
+        "has_logits": true,
+        "has_boxes": true
+      }
+    },
+    {
+      "test": "performance_benchmark",
+      "passed": true,
+      "details": {
+        "num_runs": 10,
+        "avg_inference_time": 0.06,
+        "std_dev": 0.009,
+        "min_time": 0.056,
+        "max_time": 0.087,
+        "threshold_seconds": 0.5,
+        "passes_threshold": true
+      }
+    },
+    {
+      "test": "memory_usage",
+      "passed": true,
+      "details": {
+        "peak_memory_mb": 485.17,
+        "current_memory_mb": 375.38,
+        "threshold_mb": 4000,
+        "passes_threshold": true
+      }
+    }
+  ],
+  "summary": {
+    "total_tests": 5,
+    "passed": 5,
+    "failed": 0,
+    "pass_rate": 1.0
+  }
+}

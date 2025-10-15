@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "ts": 1759690984.2429233,
+      "source": "CFO",
+      "type": "fact",
+      "text": "Our next board meeting deadline is November 12. Remember it."
+    },
+    {
+      "ts": 1759720516.2443357,
+      "source": "CEO",
+      "type": "fact",
+      "text": "Please remember the passcode is 99321."
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "What are our most critical tech challenges right now?"
+  },
+  {
+    "role": "assistant",
+    "content": " Our most critical tech challenges at the moment include:"
+  }
+]

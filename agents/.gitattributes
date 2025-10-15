@@ -1,0 +1,3 @@
+# Force Unix line endings for environment files
+*.env text eol=lf
+*.env.template text eol=lf

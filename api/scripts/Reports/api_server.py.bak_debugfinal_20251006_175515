@@ -1,0 +1,266 @@
+﻿"""
+VBoarder Unified API Server (v3)
+Optimized for multi-agent coordination and nested agent discovery.
+"""
+
+import os
+import json
+import logging
+import asyncio
+from typing import List, Dict, Optional, Set
+
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel, Field, field_validator
+from dotenv import load_dotenv
+
+# ----------------------------------------------------------------------------- #
+# ðŸ”§ Configuration
+# ----------------------------------------------------------------------------- #
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.dirname(os.path.dirname(BASE_DIR))
+load_dotenv()
+
+APP_TITLE = "VBoarder Executive API"
+API_PORT = int(os.getenv("API_PORT", 8000))
+FRONTEND_PORT = int(os.getenv("FRONTEND_PORT", 5173))
+RELOAD = os.getenv("RELOAD", "true").lower() == "true"
+WORKERS = int(os.getenv("WORKERS", "1"))
+QUERY_TIMEOUT = int(os.getenv("QUERY_TIMEOUT_SEC", "45"))
+
+SCRIPT_PATH = os.path.join(BASE_DIR, "query_agent_memory.py")
+AGENT_JSON = os.path.join(ROOT_DIR, "webui_agents.json")
+AGENT_DIR = os.path.join(ROOT_DIR, "agents")
+
+# ----------------------------------------------------------------------------- #
+# ðŸª¶ Logging Setup
+# ----------------------------------------------------------------------------- #
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
+logger = logging.getLogger("vboarder.api")
+
+# ----------------------------------------------------------------------------- #
+# ðŸ§© Agent Discovery
+# ----------------------------------------------------------------------------- #
+def discover_agent_files(agent_dir: str) -> Dict[str, Optional[str]]:
+    """Locate key files within an agent directory."""
+    system_prompt, memory_file, persona_file = None, None, None
+
+    # System prompt search paths
+    for candidate in [
+        "system.txt", "system_prompt.txt",
+        "prompts/system.txt", "prompts/system_detailed.txt",
+    ]:
+        p = os.path.join(agent_dir, candidate)
+        if os.path.exists(p):
+            system_prompt = p
+            break
+
+    # Memory file search paths
+    for candidate in ["memory.json", "memory/memory.json", "state/memory.json"]:
+        p = os.path.join(agent_dir, candidate)
+        if os.path.exists(p):
+            memory_file = p
+            break
+
+    # Persona file
+    persona_path = os.path.join(agent_dir, "personas", "vision.txt")
+    if os.path.exists(persona_path):
+        persona_file = persona_path
+
+    return {
+        "system_prompt": system_prompt,
+        "memory": memory_file,
+        "persona": persona_file,
+    }
+
+
+def load_agents() -> List[dict]:
+    """Load agents from webui_agents.json or discover them automatically."""
+    # --- Try structured agent registry first ---
+    if os.path.exists(AGENT_JSON):
+        try:
+            with open(AGENT_JSON, "r", encoding="utf-8-sig") as f:
+                data = json.load(f)
+                logger.info(f"âœ… Loaded {len(data)} agents from webui_agents.json")
+                return [
+                    {**a, "code": a.get("agent_name", a.get("code", "")).lower()}
+                    for a in data
+                ]
+        except Exception as e:
+        import traceback
+        print("🔥 DEBUG TRACEBACK 🔥")
+        traceback.print_exc()
+        raise
+        import traceback
+        print("🔥 DEBUG TRACEBACK 🔥")
+        traceback.print_exc()`n        import traceback`n        print("🔥 DEBUG TRACEBACK 🔥")`n        traceback.print_exc()
+            logger.error(f"Failed to read agent registry ({AGENT_JSON}): {e}")
+
+    # --- Fallback: Auto-discover from folders ---
+    agents = []
+    if os.path.isdir(AGENT_DIR):
+        for name in os.listdir(AGENT_DIR):
+            path = os.path.join(AGENT_DIR, name)
+            if not os.path.isdir(path):
+                continue
+
+            files = discover_agent_files(path)
+            agent_data = {
+                "code": name.lower(),
+                "name": name.upper(),
+                "system_prompt": files["system_prompt"],
+                "memory": files["memory"],
+                "persona": files["persona"],
+                "path": path,
+                "status": "active" if files["system_prompt"] else "incomplete",
+            }
+            agents.append(agent_data)
+            logger.info(f"ðŸ§© Loaded agent {name.upper()} -> {files}")
+
+        logger.info(f"ðŸ” Auto-detected {len(agents)} agents from /agents folder.")
+    else:
+        logger.warning("âš ï¸ No /agents directory found.")
+    return agents
+
+
+AGENTS = load_agents()
+VALID_AGENTS: Set[str] = {a["code"] for a in AGENTS if a["status"] == "active"}
+
+# ----------------------------------------------------------------------------- #
+# ðŸš€ FastAPI Init
+# ----------------------------------------------------------------------------- #
+app = FastAPI(title=APP_TITLE)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        f"http://localhost:{FRONTEND_PORT}",
+        "http://127.0.0.1:5173",
+        "http://localhost:3000",
+    ],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["*"],
+    allow_credentials=True,
+)
+
+# ----------------------------------------------------------------------------- #
+# ðŸ“¦ Models
+# ----------------------------------------------------------------------------- #
+class ChatRequest(BaseModel):
+    message: str = Field(..., description="User input message to the agent.")
+
+    @field_validator("message")
+    @classmethod
+    def validate_message(cls, v: str) -> str:
+        v = v.strip()
+        if not v:
+            raise ValueError("Message cannot be empty.")
+        if len(v) > 8000:
+            raise ValueError("Message too long (max 8000 chars).")
+        return v
+
+
+class ChatResponse(BaseModel):
+    agent: str
+    response: str
+
+
+# ----------------------------------------------------------------------------- #
+# âš™ï¸ Helpers
+# ----------------------------------------------------------------------------- #
+def assert_script_exists():
+    if not os.path.isfile(SCRIPT_PATH):
+        raise HTTPException(status_code=500, detail=f"Missing script: {SCRIPT_PATH}")
+
+
+def parse_query_output(stdout: str) -> str:
+    """Try JSON parsing first; fallback to plain text."""
+    try:
+        data = json.loads(stdout)
+        if isinstance(data, dict):
+            for key in ("response", "answer", "result"):
+                if key in data:
+                    return str(data[key])
+        return json.dumps(data)
+    except Exception:
+        pass
+
+    delimiter = "=" * 70
+    return stdout.split(delimiter)[-1].strip() if delimiter in stdout else stdout.strip()
+
+
+async def run_query(agent: str, message: str) -> str:
+    assert_script_exists()
+    cmd = ["python", SCRIPT_PATH, agent, message]
+    logger.info(f"ðŸ§  Running agent query: {cmd}")
+
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=QUERY_TIMEOUT)
+        if proc.returncode != 0:
+            raise HTTPException(status_code=500, detail=stderr.decode())
+        return parse_query_output(stdout.decode())
+    except asyncio.TimeoutError:
+        raise HTTPException(status_code=504, detail="Query timed out.")
+    except Exception as e:
+        import traceback
+        print("🔥 DEBUG TRACEBACK 🔥")
+        traceback.print_exc()
+        raise
+        import traceback
+        print("🔥 DEBUG TRACEBACK 🔥")
+        traceback.print_exc()`n        import traceback`n        print("🔥 DEBUG TRACEBACK 🔥")`n        traceback.print_exc()
+        logger.exception("Query error")
+        raise HTTPException(status_code=500, detail=f"Internal error: {e}")
+
+# ----------------------------------------------------------------------------- #
+# ðŸŒ Routes
+# ----------------------------------------------------------------------------- #
+@app.get("/health")
+def health_check():
+    return {"status": "ok", "agents": len(AGENTS)}
+
+
+@app.get("/vboarder/agents")
+def list_agents():
+    """Return list of agents with their discovered files."""
+    return AGENTS
+
+
+@app.post("/vboarder/chat/{agent}", response_model=ChatResponse)
+async def chat_agent(agent: str, req: ChatRequest):
+    code = agent.lower()
+    if code not in VALID_AGENTS:
+        raise HTTPException(status_code=404, detail=f"Agent '{agent}' not found or inactive.")
+
+    response_text = await run_query(code, req.message)
+    return ChatResponse(agent=code, response=response_text)
+
+
+@app.exception_handler(HTTPException)
+async def handle_http_error(request: Request, exc: HTTPException):
+    return JSONResponse(status_code=exc.status_code, content={"error": exc.detail})
+
+# ----------------------------------------------------------------------------- #
+# ðŸ Entrypoint
+# ----------------------------------------------------------------------------- #
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(
+        "api_server:app",
+        host="0.0.0.0",
+        port=API_PORT,
+        reload=RELOAD and WORKERS == 1,
+        workers=WORKERS if not RELOAD else 1,
+    )
+
+
+

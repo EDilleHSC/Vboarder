@@ -1,0 +1,13 @@
+{
+    "role":  "Chief Technology Officer",
+    "version":  "1.0.0",
+    "passive_monitor":  false,
+    "collaboration_mode":  "cos_routed",
+    "agent_name":  "CTO",
+    "requires_cos_in_projects":  true,
+    "control_scope":  [
+                          "self"
+                      ],
+    "notify_human":  true
+}
+

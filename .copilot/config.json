@@ -1,0 +1,10 @@
+{
+  "instructionsFile": "copilot-instructions.md",
+  "enabled": true,
+  "files": [
+    "agents/**/config.json",
+    "agents/**/prompt.txt",
+    "agents/**/persona.md",
+    "copilot-instructions.md"
+  ]
+}

@@ -1,0 +1,127 @@
+﻿{
+    "performance":  {
+                        "cache_responses":  true,
+                        "rate_limit_per_minute":  60,
+                        "lazy_load":  true,
+                        "parallel_requests":  3,
+                        "cache_size":  100
+                    },
+    "capabilities":  {
+                         "can_create_tasks":  true,
+                         "can_summarize":  true,
+                         "can_schedule":  true,
+                         "can_route_tasks":  true,
+                         "can_escalate":  true,
+                         "can_use_tools":  true,
+                         "can_access_memory":  true,
+                         "can_modify_calendar":  false
+                     },
+    "metadata":  {
+                     "version":  "1.0.0",
+                     "last_updated":  "2025-10-05T17:16:29Z",
+                     "code":  "COO",
+                     "name":  "COO",
+                     "description":  "Chief Operating Officer agent for VBoarder",
+                     "status":  "active",
+                     "created":  "2025-10-05",
+                     "role":  "Chief Operating Officer"
+                 },
+    "access_control":  {
+                           "knowledge_access":  {
+                                                    "can_write":  [
+                                                                      "COO_personal",
+                                                                      "task_logs"
+                                                                  ],
+                                                    "cannot_access":  [
+
+                                                                      ],
+                                                    "can_read":  [
+                                                                     "office_knowledge",
+                                                                     "COO_personal"
+                                                                 ]
+                                                }
+                       },
+    "prompts":  {
+                    "system_detailed_file":  "prompts/system_detailed.txt",
+                    "system_prompt_file":  "prompts/system.txt",
+                    "cache_ttl_seconds":  3600,
+                    "version":  "1.0.0",
+                    "cache_enabled":  true
+                },
+    "schedule":  {
+                     "auto_execute":  false,
+                     "timezone":  "UTC",
+                     "file":  "./schedule.json",
+                     "enabled":  false
+                 },
+    "memory":  {
+                   "personal_memory_file":  "./memory/personal_knowledge.json",
+                   "max_memory_items":  1000,
+                   "enabled":  true,
+                   "backend":  "file",
+                   "qdrant_collection":  null,
+                   "auto_cleanup":  true,
+                   "retention_days":  90,
+                   "qdrant_url":  null,
+                   "task_state_file":  "./memory/task_state.json",
+                   "office_memory_file":  "./memory/office_knowledge.json",
+                   "conversation_history_file":  "./memory/conversation_history.json",
+                   "embedding_model":  "nomic-embed-text"
+               },
+    "tools":  {
+                  "tool_timeout_seconds":  10,
+                  "available_tools":  [
+
+                                      ],
+                  "enabled":  true
+              },
+    "persona":  null,
+    "runtime":  {
+                    "retry_delay_seconds":  2,
+                    "retry_attempts":  3,
+                    "max_tokens":  2048,
+                    "temperature":  0.4,
+                    "model":  "llama3.1:8b",
+                    "timeout_seconds":  30,
+                    "fallback_model":  null
+                },
+    "monitoring":  {
+                       "log_file":  "./logs/agent.log",
+                       "alert_on_errors":  true,
+                       "log_level":  "INFO",
+                       "logging_enabled":  true,
+                       "metrics_enabled":  true,
+                       "health_check_interval_seconds":  60,
+                       "alert_threshold":  5
+                   },
+    "collaboration":  {
+                          "mode":  "cos_routed",
+                          "can_be_invoked_by":  [
+                                                    "all"
+                                                ],
+                          "can_invoke":  [
+                                             "CEO",
+                                             "CTO",
+                                             "CFO",
+                                             "COO",
+                                             "CMO",
+                                             "CLO",
+                                             "COS",
+                                             "SEC",
+                                             "AIR"
+                                         ],
+                          "requires_cos":  null,
+                          "manages_agents":  [
+
+                                             ],
+                          "notify_human":  false,
+                          "reports_to":  [
+                                             "COS"
+                                         ],
+                          "can_escalate_to":  [
+                                                  "COS",
+                                                  "CEO"
+                                              ],
+                          "routing_priority":  5
+                      }
+}

@@ -1,0 +1,30 @@
+{
+  "cto": {
+    "last_message": "CTO system status update at 2025-10-12T03:11:46.061274Z",
+    "timestamp": "2025-10-12T03:11:46.064614Z"
+  },
+  "cfo": {
+    "last_message": "CFO system status update at 2025-10-12T03:11:46.121658Z",
+    "timestamp": "2025-10-12T03:11:46.125075Z"
+  },
+  "clo": {
+    "last_message": "CLO system status update at 2025-10-12T03:11:46.317964Z",
+    "timestamp": "2025-10-12T03:11:46.321401Z"
+  },
+  "cmo": {
+    "last_message": "CMO system status update at 2025-10-12T03:11:46.519584Z",
+    "timestamp": "2025-10-12T03:11:46.523013Z"
+  },
+  "coo": {
+    "last_message": "COO system status update at 2025-10-12T03:11:46.721130Z",
+    "timestamp": "2025-10-12T03:11:46.724317Z"
+  },
+  "cos": {
+    "last_message": "COS system status update at 2025-10-12T03:11:46.911477Z",
+    "timestamp": "2025-10-12T03:11:46.914493Z"
+  },
+  "sec": {
+    "last_message": "SEC system status update at 2025-10-12T03:11:47.086022Z",
+    "timestamp": "2025-10-12T03:11:47.089070Z"
+  }
+}

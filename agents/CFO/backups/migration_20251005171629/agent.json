@@ -1,0 +1,7 @@
+﻿{
+    "system_prompt":  "agents\\CFO\\system.txt",
+    "memory":  "agents\\CFO\\memory.json",
+    "name":  "CFO",
+    "model":  "phi3:3.8b",
+    "status":  "active"
+}

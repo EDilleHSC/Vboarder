@@ -1,0 +1,7 @@
+﻿{
+    "system_prompt":  "agents\\CMO\\system.txt",
+    "memory":  "agents\\CMO\\memory.json",
+    "name":  "CMO",
+    "model":  "qwen2:7b",
+    "status":  "active"
+}

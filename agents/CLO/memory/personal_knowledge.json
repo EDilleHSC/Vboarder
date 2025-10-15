@@ -1,0 +1,19 @@
+{
+  "knowledge_base": {
+    "version": "2.0",
+    "last_updated": "2025-10-03",
+    "agent_code": "CLO",
+    "type": "personal",
+    "description": "CLO-specific expertise, legal frameworks, and compliance methodologies"
+  },
+  "knowledge_items": [
+    {
+      "id": "clo_expertise_001",
+      "category": "contract_review",
+      "title": "Contract Review & Negotiation Framework",
+      "content": "Contract review: 1) Identify type and laws, 2) Review key terms, 3) Assess risk exposure, 4) Flag problematic clauses, 5) Negotiate improvements, 6) Get business context, 7) Document approval.",
+      "confidence": 0.95,
+      "tags": ["contracts", "legal_review", "negotiation"]
+    }
+  ]
+}

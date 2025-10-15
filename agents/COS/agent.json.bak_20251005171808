@@ -1,0 +1,6 @@
+﻿{
+    "name":  "UNKNOWN",
+    "status":  "restricted",
+    "version":  "1.0",
+    "model":  "llama3.1:8b"
+}

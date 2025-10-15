@@ -1,0 +1,16 @@
+{
+  "agents": [
+    {
+      "code": "SEC",
+      "name": "Executive Secretary",
+      "path": "agents/SEC",
+      "active": true
+    },
+    {
+      "code": "COS",
+      "name": "Chief of Staff",
+      "path": "agents/COS",
+      "active": true
+    }
+  ]
+}

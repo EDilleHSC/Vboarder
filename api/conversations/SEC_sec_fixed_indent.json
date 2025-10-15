@@ -1,0 +1,10 @@
+[
+  {
+    "role": "user",
+    "content": "Schedule CEO, CFO, CTO tomorrow, 30m, morning MT."
+  },
+  {
+    "role": "assistant",
+    "content": " Schedule a meeting with the CEO, CFO, and CTO for tomorrow morning at 30 minutes to discuss the upcoming board meeting deadline on November 12th."
+  }
+]

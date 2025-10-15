@@ -1,0 +1,18 @@
+[
+  {
+    "role": "user",
+    "content": "Should we expand into a new market vertical?"
+  },
+  {
+    "role": "assistant",
+    "content": " To make an informed decision about expanding into a new market vertical, consider the following:"
+  },
+  {
+    "role": "user",
+    "content": "The team is divided on this decision - what's your call?"
+  },
+  {
+    "role": "assistant",
+    "content": " Based on the information provided, the team appears to be considering a market expansion. As CEO, my advice would be:"
+  }
+]

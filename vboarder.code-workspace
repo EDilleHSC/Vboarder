@@ -1,0 +1,99 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "api"
+    },
+    {
+      "path": "coord"
+    },
+    {
+      "path": "agents"
+    },
+    {
+      "path": "docs"
+    }
+  ],
+  "settings": {
+    // --- Editor setup ---
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true,
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+
+    // --- Python & environment ---
+    "python.defaultInterpreterPath": "/usr/bin/python3",
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "python.terminal.activateEnvironment": true,
+
+    // --- Terminal ---
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "terminal.integrated.cwd": "/mnt/d/ai/projects/vboarder",
+    "terminal.integrated.profiles.linux": {
+      "bash": {
+        "path": "/bin/bash"
+      }
+    },
+
+    // --- Copilot Integration ---
+    "github.copilot.chat.experimental.enable": true,
+    "github.copilot.enable": {
+      "*": true,
+      "plaintext": true,
+      "markdown": true,
+      "python": true
+    },
+    "github.copilot.advanced": {
+      "context": {
+        "include": [
+          "copilot-instructions.md",
+          "api/**",
+          "coord/**",
+          "agents/**"
+        ]
+      }
+    },
+
+    // --- Default file view ---
+    "workbench.startupEditor": "readme",
+    "workbench.editor.enablePreview": false,
+    "workbench.colorTheme": "Default Dark+"
+  },
+  "extensions": {
+    "recommendations": [
+      "github.copilot",
+      "ms-python.python",
+      "ms-toolsai.jupyter",
+      "ms-azuretools.vscode-docker"
+    ]
+  },
+  "launch": {
+    "configurations": [
+      {
+        "name": "Run FastAPI (Backend)",
+        "type": "python",
+        "request": "launch",
+        "module": "uvicorn",
+        "args": [
+          "api.main:app",
+          "--reload",
+          "--port",
+          "3738"
+        ],
+        "jinja": true
+      },
+      {
+        "name": "Run Scheduler",
+        "type": "python",
+        "request": "launch",
+        "program": "coord/scheduler.py",
+        "env": {
+          "INTERVAL": "30"
+        }
+      }
+    ]
+  }
+}
