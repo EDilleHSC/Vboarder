@@ -1,10 +1,12 @@
-import os, json
+import os
+import json
 from datetime import datetime
 
 AGENT = os.environ.get("AGENT", "cto").lower()
 BASE_DIR = f"agents/{AGENT}"
 MEMORY_PATH = f"{BASE_DIR}/memory.jsonl"
 STATE_PATH = "data/shared_state.json"
+
 
 def post_update():
     update = f"{AGENT.upper()} system status update at {datetime.utcnow().isoformat()}Z"
@@ -18,7 +20,7 @@ def post_update():
 
     shared[AGENT] = {
         "last_message": update,
-        "timestamp": datetime.utcnow().isoformat() + "Z"
+        "timestamp": datetime.utcnow().isoformat() + "Z",
     }
 
     with open(STATE_PATH, "w") as f:
@@ -28,11 +30,12 @@ def post_update():
     entry = {
         "timestamp": datetime.utcnow().isoformat() + "Z",
         "agent": AGENT,
-        "message": update
+        "message": update,
     }
 
     with open(MEMORY_PATH, "a") as f:
         f.write(json.dumps(entry) + "\n")
+
 
 if __name__ == "__main__":
     post_update()

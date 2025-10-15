@@ -1,8 +1,10 @@
-from fastapi import FastAPI, Request, Depends, HTTPException, status
-from pydantic import BaseModel
+import json
+import os
 from pathlib import Path
+
 from dotenv import load_dotenv
-import os, json
+from fastapi import Depends, FastAPI, HTTPException, Request, status
+from pydantic import BaseModel
 
 # -------------------------------------------------------------------
 #  Load .env and initialize
@@ -13,12 +15,14 @@ AGENTS_DIR = Path(__file__).resolve().parent / "agents"
 
 app = FastAPI(title="AI Agent API", version="1.0")
 
+
 # -------------------------------------------------------------------
 #  Models
 # -------------------------------------------------------------------
 class AskPayload(BaseModel):
     agent: str
     query: str
+
 
 # -------------------------------------------------------------------
 #  Security
@@ -29,14 +33,15 @@ def verify_api_key(request: Request):
     if not API_KEY:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Server missing API_KEY environment variable."
+            detail="Server missing API_KEY environment variable.",
         )
     if key != API_KEY:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid or missing API key."
+            detail="Invalid or missing API key.",
         )
     return True
+
 
 # -------------------------------------------------------------------
 #  Routes (protected)
@@ -44,7 +49,10 @@ def verify_api_key(request: Request):
 @app.get("/api/agents", dependencies=[Depends(verify_api_key)])
 def list_agents():
     AGENTS_DIR.mkdir(exist_ok=True)
-    return sorted([d.name for d in AGENTS_DIR.iterdir() if d.is_dir() and d.name.isupper()])
+    return sorted(
+        [d.name for d in AGENTS_DIR.iterdir() if d.is_dir() and d.name.isupper()]
+    )
+
 
 @app.get("/api/memory/{agent}", dependencies=[Depends(verify_api_key)])
 def get_memory(agent: str):
@@ -54,12 +62,14 @@ def get_memory(agent: str):
     with open(mem_path, "r", encoding="utf-8") as f:
         return [json.loads(line) for line in f if line.strip()]
 
+
 @app.get("/api/memory/{agent}/summary", dependencies=[Depends(verify_api_key)])
 def get_memory_summary(agent: str):
     summary_path = AGENTS_DIR / agent / "memory_summary.md"
     if not summary_path.exists():
         return {"error": f"No summary found for {agent}"}
     return {"summary": summary_path.read_text(encoding="utf-8")}
+
 
 @app.post("/api/ask", dependencies=[Depends(verify_api_key)])
 def ask_agent(payload: AskPayload):
@@ -70,8 +80,9 @@ def ask_agent(payload: AskPayload):
     return {
         "agent": payload.agent,
         "query": payload.query,
-        "response": f"🤖 Simulated response from {payload.agent}"
+        "response": f"🤖 Simulated response from {payload.agent}",
     }
+
 
 # -------------------------------------------------------------------
 #  Open /api/health (no auth)

@@ -1,3 +1,16 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vboarder"
+version = "0.1.0"
+description = "VBoarder AI multi-agent leadership system"
+requires-python = ">=3.10"
+
+[tool.setuptools]
+packages = ["api", "agents", "coord"]
+
 [tool.ruff]
 line-length = 88
 select = ["E", "F", "W"]

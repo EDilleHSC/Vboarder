@@ -2,7 +2,6 @@
 
 ## Overview
 
-
 # 🤖 VBoarder – Copilot Development Instructions
 
 ## 🧠 System Overview
@@ -10,6 +9,7 @@
 VBoarder is an **AI executive system** built in Python (FastAPI backend) and React/Next.js frontend. It simulates a company leadership team with AI agents representing key roles: `CEO`, `CTO`, `CFO`, `COS`, `COO`, `CLO`, `CMO`, `SEC`, and `AIR`.
 
 Each agent has:
+
 - A `config.json` (settings)
 - A `persona.md` (personality profile)
 - A `prompt.txt` (custom system prompt)
@@ -48,7 +48,6 @@ Example minimal `config.json`:
 
 Copilot should use the canonical `agents/<AGENT_NAME>/` layout for new work. Existing references to `agents/agents_v2/` were migrated into `agents/` during the refactor.
 
-
 The system is modular, testable, and built to run locally — no cloud dependencies.
 
 ---
@@ -77,52 +76,52 @@ vboarder/
 
 ### ✅ DO:
 
-* Use **absolute imports** (e.g., `from api.server import app`) for test stability.
-* Assume `agents/` follows the EXAMPLE structure: `config.json`, `persona.md`, `prompt.txt`, `memory.jsonl`.
-* Write **lightweight test files** that only import `server.py`, not `main.py`.
-* Output JSONL format for memory files (one JSON object per line).
-* Use `uvicorn api.server:app --reload` as the dev server command.
-* Keep `memory.jsonl` read/writable by default; create it if missing.
+- Use **absolute imports** (e.g., `from api.server import app`) for test stability.
+- Assume `agents/` follows the EXAMPLE structure: `config.json`, `persona.md`, `prompt.txt`, `memory.jsonl`.
+- Write **lightweight test files** that only import `server.py`, not `main.py`.
+- Output JSONL format for memory files (one JSON object per line).
+- Use `uvicorn api.server:app --reload` as the dev server command.
+- Keep `memory.jsonl` read/writable by default; create it if missing.
 
 ### ❌ DO NOT:
 
-* Import Ollama, RAG memory, or `simple_connector` in tests unless explicitly mocked.
-* Hardcode agent names — loop over folders in `agents/`.
-* Write tests that require internet, Docker, or external APIs.
-* Suggest removing `conftest.py` — it's intentional.
+- Import Ollama, RAG memory, or `simple_connector` in tests unless explicitly mocked.
+- Hardcode agent names — loop over folders in `agents/`.
+- Write tests that require internet, Docker, or external APIs.
+- Suggest removing `conftest.py` — it's intentional.
 
 ---
 
 ## 🧪 Testing Guidance
 
-* Use `pytest tests/test_health.py` as the base pattern.
-* Test only core endpoints (`/health`, `/chat/{agent}`).
-* Avoid triggering heavy agent init during test discovery.
-* Use `conftest.py` for:
+- Use `pytest tests/test_health.py` as the base pattern.
+- Test only core endpoints (`/health`, `/chat/{agent}`).
+- Avoid triggering heavy agent init during test discovery.
+- Use `conftest.py` for:
 
-  * Setting `sys.path`
-  * Mocking Ollama or other external deps
+  - Setting `sys.path`
+  - Mocking Ollama or other external deps
 
 ---
 
 ## 💡 Usage Notes
 
-* Agents sync via `coord/agent_sync.py`, orchestrated by the `COS` agent.
-* Memory aggregation (to global memory) is handled by `AIR`.
-* Frontend connects to backend at `/api/` (adjust proxy in Next.js if needed).
-* All file paths are Linux-style (use uppercase agent folder names!).
+- Agents sync via `coord/agent_sync.py`, orchestrated by the `COS` agent.
+- Memory aggregation (to global memory) is handled by `AIR`.
+- Frontend connects to backend at `/api/` (adjust proxy in Next.js if needed).
+- All file paths are Linux-style (use uppercase agent folder names!).
 
 ---
 
 ## 🛠️ Sample Tasks You Can Help With
 
-* Generate a new agent template (`agents/EXAMPLE/`)
-* Create a Docker Compose file to start backend + frontend
-* Write FastAPI routes for chat or coordination
-* Build a unit test for `/chat/CTO` or any other endpoint
-* Add logging to `tools/ct_check.py`
-* Help create `POLICY_SOP.md` templates for each agent
-* Refactor agent init to delay Ollama/RAG loading until runtime
+- Generate a new agent template (`agents/EXAMPLE/`)
+- Create a Docker Compose file to start backend + frontend
+- Write FastAPI routes for chat or coordination
+- Build a unit test for `/chat/CTO` or any other endpoint
+- Add logging to `tools/ct_check.py`
+- Help create `POLICY_SOP.md` templates for each agent
+- Refactor agent init to delay Ollama/RAG loading until runtime
 
 ---
 
@@ -130,12 +129,12 @@ vboarder/
 
 Copilot, VBoarder is complete when:
 
-* All agents have config/persona/prompt/memory files
-* Backend + frontend run locally
-* Memory aggregation works
-* Health tests pass in CI
-* SOP files are written
-* Optional: Docker and CI are integrated
+- All agents have config/persona/prompt/memory files
+- Backend + frontend run locally
+- Memory aggregation works
+- Health tests pass in CI
+- SOP files are written
+- Optional: Docker and CI are integrated
 
 ---
 
@@ -161,36 +160,23 @@ Keep responses short, relevant, and **never assume access to Ollama or external 
 
 # End of Instructions
 
-
 Maintain async safety and memory consistency.
-
 
 Write small, modular helper functions (no monolithic scripts).
 
-
 Prefer docstrings and comments for new logic.
-
-
 
 🧠 Developer Note
 This system models human–AI hybrid collaboration:
 
-
 The CEO (you) and COS (Chief of Staff AI) coordinate the rest.
-
 
 The CTO, AIR, and department heads maintain system logic, memory, and sync cycles.
 
-
 coord/scheduler.py orchestrates all agents every 30 seconds for sync.
-
-
-
 
 Keep all code modular, documented, and agent-driven.
 Your AI agents are designed to communicate, not compete.
-
-
 
 ---
 

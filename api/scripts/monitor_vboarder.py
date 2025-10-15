@@ -1,13 +1,16 @@
-import time
 import json
-from ingestion_health import check_ingestion_health
+import time
+
 from embedding_health import check_embedding_service
-from qdrant_health import check_qdrant
 from gpu_health import log_gpu_metrics
+from ingestion_health import check_ingestion_health
+from qdrant_health import check_qdrant
+
 
 def log(data, filename):
     with open(filename, "a") as f:
         f.write(json.dumps(data) + "\n")
+
 
 def main():
     timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
@@ -23,6 +26,7 @@ def main():
 
     log(results, "vboarder_monitor_log.jsonl")
     print("✓ Monitoring complete.")
+
 
 if __name__ == "__main__":
     main()

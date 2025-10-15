@@ -3,39 +3,56 @@
 env/
 __pycache__/
 ```ignore
-# Python virtual environment
+# Python virtual environment & cache
 .venv/
+.venv*/
 venv/
 env/
-
-# Python cache and packages
+api/venv/
+agents/venv/
 __pycache__/
 *.py[cod]
 *.pyo
+*.pyc
 *.egg-info/
 .mypy_cache/
 .pytest_cache/
+.coverage
+*.sqlite
 
 # Local config / secrets
 .env
+.env.*
+!.env.example
 env_vars/
 
 # Logs
 *.log
 logs/
+agents/*/logs/
 backend_*.logO
+api/ollama.log
+
+# Dev dashboard
+.devdash_pids.json
 
 # Node / frontend
 node_modules/
 .next/
+.nextcache/
+out/
 dist/
 build/
+api/ui/node_modules/
+api/ui/dist/
+api/conversations/*.json
 
 # IDE/editor/project noise
 .vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
+*.swp
 
 # OS files
 .DS_Store
@@ -48,6 +65,9 @@ agents/SEC/backups/
 backups/
 archive/
 agents/*/backups/
+agents/*/memory.json
+agents/*/memory.jsonl
+vboarder_reports/archives/
 
 # Quarantine / temp
 .quarantine/

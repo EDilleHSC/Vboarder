@@ -8,6 +8,7 @@ LOG_PATH = "./logs/benchmark_log.json"
 
 os.makedirs("logs", exist_ok=True)
 
+
 def benchmark_agents():
     print("⚙️ Benchmarking agents...")
 
@@ -24,14 +25,13 @@ def benchmark_agents():
             time.sleep(0.5)  # Simulated workload
             end = time.time()
 
-            results[agent_name] = {
-                "benchmark_duration_sec": round(end - start, 3)
-            }
+            results[agent_name] = {"benchmark_duration_sec": round(end - start, 3)}
 
     with open(LOG_PATH, "w") as f:
         json.dump(results, f, indent=2)
 
     print(f"✅ Benchmark results saved to: {LOG_PATH}")
+
 
 if __name__ == "__main__":
     benchmark_agents()

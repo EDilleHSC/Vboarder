@@ -1,11 +1,11 @@
 # File: scripts/next_shift_monitoring.py
 
-import os
-import time
 import json
+import os
 import subprocess
-import requests
 from datetime import datetime
+
+import requests
 from qdrant_client import QdrantClient
 
 # Config
@@ -17,12 +17,14 @@ LOG_DIR = "logs"
 # Ensure log dir exists
 os.makedirs(LOG_DIR, exist_ok=True)
 
+
 def log_json(obj, tag):
     now = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
     path = os.path.join(LOG_DIR, f"{tag}_{now}.json")
     with open(path, "w") as f:
         json.dump(obj, f, indent=2)
     print(f"[LOGGED] {tag} -> {path}")
+
 
 def check_ollama():
     try:
@@ -32,6 +34,7 @@ def check_ollama():
     except Exception as e:
         return {"status": "error", "error": str(e)}
 
+
 def check_qdrant():
     try:
         q = QdrantClient(host="localhost", port=6333)
@@ -40,13 +43,21 @@ def check_qdrant():
     except Exception as e:
         return {"status": "error", "error": str(e)}
 
+
 def get_gpu_info():
     try:
-        result = subprocess.check_output(["nvidia-smi", "--query-gpu=temperature.gpu,memory.used", "--format=csv,noheader,nounits"])
-        temp, mem = result.decode().strip().split(', ')
+        result = subprocess.check_output(
+            [
+                "nvidia-smi",
+                "--query-gpu=temperature.gpu,memory.used",
+                "--format=csv,noheader,nounits",
+            ]
+        )
+        temp, mem = result.decode().strip().split(", ")
         return {"temperature_C": int(temp), "memory_MB": int(mem)}
     except Exception as e:
         return {"status": "error", "error": str(e)}
+
 
 def run_monitoring():
     report = {
@@ -54,9 +65,10 @@ def run_monitoring():
         "agent": AGENT,
         "ollama": check_ollama(),
         "qdrant": check_qdrant(),
-        "gpu": get_gpu_info()
+        "gpu": get_gpu_info(),
     }
     log_json(report, "shift_monitor")
+
 
 if __name__ == "__main__":
     run_monitoring()

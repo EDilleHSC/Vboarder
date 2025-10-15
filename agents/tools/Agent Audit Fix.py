@@ -1,4 +1,3 @@
-import os
 import json
 from pathlib import Path
 from shutil import copytree, rmtree
@@ -14,20 +13,22 @@ AGENT_FILES = [
     "memory.jsonl",
     "persona.md",
     "prompt.md",
-    "schedule.json"
+    "schedule.json",
 ]
+
 
 def is_valid_json(file_path):
     try:
-        with open(file_path, 'r') as f:
+        with open(file_path, "r") as f:
             json.load(f)
         return True
     except:
         return False
 
+
 def is_valid_jsonl(file_path):
     try:
-        with open(file_path, 'r') as f:
+        with open(file_path, "r") as f:
             lines = f.readlines()
         for line in lines:
             if line.strip():
@@ -35,6 +36,7 @@ def is_valid_jsonl(file_path):
         return True
     except:
         return False
+
 
 def write_readme(agent_name, status, issues):
     readme_path = AGENT_DIR / agent_name / "README.md"
@@ -52,9 +54,9 @@ def fix_agents():
     LOG_DIR.mkdir(exist_ok=True)
 
     agents = [d for d in AGENT_DIR.iterdir() if d.is_dir() and d.name.isupper()]
-    
+
     results = {}
-    
+
     for agent in agents:
         issues = []
         all_good = True
@@ -99,7 +101,7 @@ def fix_agents():
 
         results[agent.name] = {
             "files": files,
-            "status": "✅ STABLE" if all_good else "❌ FIXED"
+            "status": "✅ STABLE" if all_good else "❌ FIXED",
         }
 
     with open(LOG_DIR / "agent_audit_log.json", "w") as f:
@@ -109,5 +111,6 @@ def fix_agents():
     print(f"📄 Report saved to {LOG_DIR / 'agent_audit_log.json'}")
     print(f"📁 Backups in: {BACKUP_DIR}/")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     fix_agents()

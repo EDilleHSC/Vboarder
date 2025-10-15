@@ -2,13 +2,19 @@
 """
 Ops Agent Monitor – watches backend health and logs.
 """
-import aiohttp, asyncio, datetime, psutil, os, glob
+import asyncio
+import datetime
+import glob
+import os
+
+import aiohttp
 
 LOG_DIR = "/mnt/d/ai/projects/vboarder/logs"
 REPORT_DIR = "/mnt/d/ai/projects/vboarder/vboarder_reports"
 BACKEND_HEALTH = "http://127.0.0.1:8000/api/system/health"
 
 os.makedirs(REPORT_DIR, exist_ok=True)
+
 
 async def fetch_health():
     try:
@@ -18,6 +24,7 @@ async def fetch_health():
     except Exception as e:
         return {"status": "error", "detail": str(e)}
 
+
 def recent_errors(limit=10):
     errors = []
     for log_file in glob.glob(os.path.join(LOG_DIR, "*.log")):
@@ -26,6 +33,7 @@ def recent_errors(limit=10):
                 if any(k in line for k in ["ERROR", "Traceback", "Exception"]):
                     errors.append(line.strip())
     return errors[-limit:] if errors else ["No recent critical errors."]
+
 
 async def monitor_loop(interval=300):
     while True:
@@ -39,10 +47,12 @@ async def monitor_loop(interval=300):
             for k, v in health.items():
                 f.write(f"- **{k}**: {v}\n")
             f.write("\n## Recent Errors\n")
-            for e in recent_errors(): f.write(f"- {e}\n")
+            for e in recent_errors():
+                f.write(f"- {e}\n")
 
         print(f"[OpsAgent] Report generated → {fname}")
         await asyncio.sleep(interval)
+
 
 if __name__ == "__main__":
     print("[OpsAgent] Starting monitor loop (interval = 5 min)")

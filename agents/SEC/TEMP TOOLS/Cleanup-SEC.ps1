@@ -18,17 +18,17 @@ $hasBackups = Test-Path ".\backups"
 
 if ($hasBackup -and $hasBackups) {
   Write-Host "  Found both 'backup' and 'backups' folders" -ForegroundColor Gray
-  
+
   # Count items in each
   $backupItems = Get-ChildItem ".\backup" -Recurse
   $backupsItems = Get-ChildItem ".\backups" -Recurse
-  
+
   Write-Host "  backup/: $($backupItems.Count) items" -ForegroundColor Gray
   Write-Host "  backups/: $($backupsItems.Count) items" -ForegroundColor Gray
-  
+
   # Move all from backup/ to backups/
   Write-Host "  Moving all items from backup/ to backups/..." -ForegroundColor Yellow
-  
+
   if (-not $WhatIf) {
     Get-ChildItem ".\backup" -Recurse | ForEach-Object {
       $dest = $_.FullName.Replace("\backup\", "\backups\")
@@ -36,7 +36,7 @@ if ($hasBackup -and $hasBackups) {
       if (-not (Test-Path $destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out-Null }
       Move-Item $_.FullName $dest -Force
     }
-    
+
     # Remove empty backup folder
     Remove-Item ".\backup" -Recurse -Force
     Write-Host "  Consolidated into backups/ and removed backup/ folder" -ForegroundColor Green
@@ -58,13 +58,13 @@ Write-Host "`n[2/2] Cleaning old .bak files from config/..." -ForegroundColor Ye
 
 if (Test-Path ".\config") {
   $bakFiles = Get-ChildItem ".\config" -Filter "*.bak*" -File
-  
+
   if ($bakFiles.Count -gt 0) {
     Write-Host "  Found $($bakFiles.Count) .bak files:" -ForegroundColor Yellow
     foreach ($bak in $bakFiles) {
       Write-Host "    - $($bak.Name) ($($bak.Length) bytes)" -ForegroundColor Gray
     }
-    
+
     if (-not $WhatIf) {
       $bakFiles | Remove-Item -Force
       Write-Host "  Deleted $($bakFiles.Count) .bak files" -ForegroundColor Green

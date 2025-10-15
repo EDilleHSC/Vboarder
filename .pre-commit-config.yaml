@@ -1,0 +1,103 @@
+# VBoarder Pre-Commit Hooks Configuration
+# Elite-grade automated code quality checks
+# Runs automatically on every commit
+
+repos:
+  # ==========================================
+  # Python: Code Formatting (Black)
+  # ==========================================
+  - repo: https://github.com/psf/black
+    rev: 24.8.0
+    hooks:
+      - id: black
+        language_version: python3.12
+        args: ["--line-length=88"]
+        exclude: ^(\.venv|\.venv-wsl|node_modules|archive|backup)/
+
+  # ==========================================
+  # Python: Linting & Import Sorting (Ruff)
+  # ==========================================
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.9
+    hooks:
+      - id: ruff
+        args: ["--fix", "--exit-non-zero-on-fix"]
+        exclude: ^(\.venv|\.venv-wsl|node_modules|archive|backup)/
+
+  # ==========================================
+  # Python: Import Sorting (isort)
+  # ==========================================
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: ["--profile", "black", "--line-length", "88"]
+        exclude: ^(\.venv|\.venv-wsl|node_modules|archive|backup)/
+
+  # ==========================================
+  # General: File Validation
+  # ==========================================
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^(\.venv|\.venv-wsl|node_modules|archive|backup|.*\.md)/
+      - id: end-of-file-fixer
+        exclude: ^(\.venv|\.venv-wsl|node_modules|archive|backup)/
+      - id: check-yaml
+        args: ["--unsafe"] # Allow custom YAML tags
+      - id: check-json
+      - id: check-toml
+      - id: check-added-large-files
+        args: ["--maxkb=1000"]
+      - id: check-merge-conflict
+      - id: debug-statements
+      - id: mixed-line-ending
+        args: ["--fix=lf"]
+
+  # ==========================================
+  # Shell: Script Validation (shellcheck)
+  # ==========================================
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.9.0.6
+    hooks:
+      - id: shellcheck
+        args: ["--severity=warning"]
+        files: \.(sh|bash)$
+
+  # ==========================================
+  # Frontend: Formatting (Prettier)
+  # ==========================================
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        types_or: [javascript, jsx, ts, tsx, json, markdown, yaml]
+        exclude: ^(\.venv|\.venv-wsl|node_modules|archive|backup|package-lock\.json)/
+        additional_dependencies:
+          - prettier@3.2.5
+          - prettier-plugin-tailwindcss@0.5.11
+
+# ==========================================
+# Configuration
+# ==========================================
+default_language_version:
+  python: python3.12
+
+exclude: |
+  (?x)^(
+    \.venv/|
+    \.venv-wsl/|
+    node_modules/|
+    __pycache__/|
+    archive/|
+    backup/|
+    data/|
+    \.pytest_cache/|
+    \.mypy_cache/|
+    \.ruff_cache/|
+    htmlcov/
+  )
+
+fail_fast: false
+minimum_pre_commit_version: "3.0.0"

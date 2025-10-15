@@ -1,8 +1,8 @@
-import os
 import json
-from pathlib import Path
 from datetime import datetime
-from typing import List, Dict
+from pathlib import Path
+from typing import Dict, List
+
 
 # === Agent Loader ===
 def load_agent(agent_path: Path) -> dict:
@@ -67,7 +67,9 @@ def load_memory(agent_path: Path, max_entries: int = None) -> List[Dict[str, str
 
 
 # === Memory Maintenance ===
-def summarize_memory_if_needed(agent_path: Path, interval: int = 10, verbose: bool = False):
+def summarize_memory_if_needed(
+    agent_path: Path, interval: int = 10, verbose: bool = False
+):
     """Periodically summarize long-term memory (placeholder)"""
     mem_path = Path(agent_path) / "memory.json"
     if not mem_path.exists():

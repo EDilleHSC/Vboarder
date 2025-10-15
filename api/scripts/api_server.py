@@ -3,25 +3,25 @@ VBoarder Unified API Server (v3)
 Optimized for multi-agent coordination and nested agent discovery.
 """
 
-import os
-import sys
+import asyncio
 import json
 import logging
-import asyncio
+import os
 import subprocess
+import sys
 
 # ✅ Windows Fix — enable subprocess support for asyncio
 if sys.platform.startswith("win"):
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     print("EventLoopPolicy:", type(asyncio.get_event_loop_policy()).__name__)
 
-from typing import List, Dict, Optional, Set
+from typing import Dict, List, Optional, Set
 
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, field_validator
-from dotenv import load_dotenv
 
 # ----------------------------------------------------------------------------- #
 # Configuration
@@ -50,6 +50,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger("vboarder.api")
 
+
 # ----------------------------------------------------------------------------- #
 # Agent Discovery
 # ----------------------------------------------------------------------------- #
@@ -58,8 +59,10 @@ def discover_agent_files(agent_dir: str) -> Dict[str, Optional[str]]:
     system_prompt, memory_file, persona_file = None, None, None
 
     for candidate in [
-        "system.txt", "system_prompt.txt",
-        "prompts/system.txt", "prompts/system_detailed.txt",
+        "system.txt",
+        "system_prompt.txt",
+        "prompts/system.txt",
+        "prompts/system_detailed.txt",
     ]:
         p = os.path.join(agent_dir, candidate)
         if os.path.exists(p):
@@ -143,6 +146,7 @@ app.add_middleware(
     allow_credentials=True,
 )
 
+
 # ----------------------------------------------------------------------------- #
 # Models
 # ----------------------------------------------------------------------------- #
@@ -163,6 +167,7 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     agent: str
     response: str
+
 
 # ----------------------------------------------------------------------------- #
 # Helpers
@@ -193,17 +198,18 @@ def parse_query_output(stdout: str) -> str:
 async def run_proc_blocking(cmd, cwd=None, env=None, timeout=None):
     """Run subprocess in a thread to avoid Windows asyncio subprocess issues."""
     logger.info("🔧 Using thread+subprocess.run (Windows-safe mode)")
-    
+
     def _run():
         return subprocess.run(
             cmd,
             cwd=cwd,
             env=env,
             capture_output=True,
-            text=False,   # keep bytes; we'll decode explicitly
+            text=False,  # keep bytes; we'll decode explicitly
             timeout=timeout,
             check=False,
         )
+
     return await asyncio.to_thread(_run)
 
 
@@ -211,7 +217,9 @@ async def run_query(agent: str, message: str) -> str:
     """Execute agent query via subprocess with timeout (Windows-safe)."""
     assert_script_exists()
     cmd = [sys.executable, SCRIPT_PATH, agent, message]
-    logger.info(f"Running agent query: agent={agent}, msg_len={len(message)}, py={sys.executable}")
+    logger.info(
+        f"Running agent query: agent={agent}, msg_len={len(message)}, py={sys.executable}"
+    )
 
     try:
         res = await run_proc_blocking(
@@ -225,8 +233,13 @@ async def run_query(agent: str, message: str) -> str:
         err_text = (res.stderr or b"").decode("utf-8", errors="replace")
 
         if res.returncode != 0:
-            logger.error(f"Query script failed (code {res.returncode}). stderr:\n{err_text}")
-            raise HTTPException(status_code=500, detail=f"Query failed (code {res.returncode}): {err_text}")
+            logger.error(
+                f"Query script failed (code {res.returncode}). stderr:\n{err_text}"
+            )
+            raise HTTPException(
+                status_code=500,
+                detail=f"Query failed (code {res.returncode}): {err_text}",
+            )
 
         if not out_text.strip():
             logger.error(f"Query script produced no output for agent={agent}")
@@ -241,14 +254,21 @@ async def run_query(agent: str, message: str) -> str:
         raise
     except Exception as e:
         logger.exception(f"Unexpected error during query for agent={agent}")
-        raise HTTPException(status_code=500, detail=f"Internal error: {type(e).__name__}: {e}")
+        raise HTTPException(
+            status_code=500, detail=f"Internal error: {type(e).__name__}: {e}"
+        )
+
 
 # ----------------------------------------------------------------------------- #
 # Routes
 # ----------------------------------------------------------------------------- #
 @app.get("/health")
 def health_check():
-    return {"status": "ok", "agents_total": len(AGENTS), "agents_active": len(VALID_AGENTS)}
+    return {
+        "status": "ok",
+        "agents_total": len(AGENTS),
+        "agents_active": len(VALID_AGENTS),
+    }
 
 
 @app.get("/vboarder/agents")
@@ -260,7 +280,9 @@ def list_agents():
 async def chat_agent(agent: str, req: ChatRequest):
     code = agent.lower()
     if code not in VALID_AGENTS:
-        raise HTTPException(status_code=404, detail=f"Agent '{agent}' not found or inactive.")
+        raise HTTPException(
+            status_code=404, detail=f"Agent '{agent}' not found or inactive."
+        )
     response_text = await run_query(code, req.message)
     return ChatResponse(agent=code, response=response_text)
 
@@ -275,8 +297,7 @@ async def probe_subprocess():
     """Test endpoint to verify subprocess works."""
     try:
         res = await run_proc_blocking(
-            [sys.executable, "-c", "print('subprocess_ok')"],
-            timeout=5
+            [sys.executable, "-c", "print('subprocess_ok')"], timeout=5
         )
         out = (res.stdout or b"").decode("utf-8", errors="replace").strip()
         return {"status": "ok", "stdout": out, "returncode": res.returncode}
@@ -288,11 +309,13 @@ async def probe_subprocess():
 async def handle_http_error(request: Request, exc: HTTPException):
     return JSONResponse(status_code=exc.status_code, content={"error": exc.detail})
 
+
 # ----------------------------------------------------------------------------- #
 # Entrypoint
 # ----------------------------------------------------------------------------- #
 if __name__ == "__main__":
     import uvicorn
+
     logger.info(f"Starting {APP_TITLE} on port {API_PORT}")
     logger.info(f"SCRIPT_PATH: {SCRIPT_PATH} (exists={os.path.isfile(SCRIPT_PATH)})")
     logger.info(f"Python: {sys.executable}")

@@ -3,9 +3,10 @@ import os
 import json
 import shutil
 
+
 def migrate_agent(agent_path, remove_config=False):
     report = {"agent": os.path.basename(agent_path), "actions": []}
-    
+
     agent_json_path = os.path.join(agent_path, "agent.json")
     config_json_path = os.path.join(agent_path, "agent_config.json")
 
@@ -61,9 +62,18 @@ def run_migration(agents_dir, remove_config=False):
 
 if __name__ == "__main__":
     import argparse
-    parser = argparse.ArgumentParser(description="Migrate agent folder structure to standard layout.")
-    parser.add_argument("--agents_dir", type=str, required=True, help="Path to agents folder")
-    parser.add_argument("--remove-config", action="store_true", help="Remove agent_config.json if present")
+
+    parser = argparse.ArgumentParser(
+        description="Migrate agent folder structure to standard layout."
+    )
+    parser.add_argument(
+        "--agents_dir", type=str, required=True, help="Path to agents folder"
+    )
+    parser.add_argument(
+        "--remove-config",
+        action="store_true",
+        help="Remove agent_config.json if present",
+    )
     args = parser.parse_args()
 
     run_migration(args.agents_dir, remove_config=args.remove_config)

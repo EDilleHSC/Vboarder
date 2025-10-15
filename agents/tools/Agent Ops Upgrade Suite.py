@@ -2,18 +2,21 @@
 """
 agentctl - AI AgentOps CLI Tool
 """
-import os
-import sys
-import json
 import argparse
+import json
+import os
 from pathlib import Path
-from datetime import datetime
 
 AGENT_CORE_FILES = [
-    "agent.json", "config.json", "memory.jsonl",
-    "persona.md", "prompt.md", "schedule.json"
+    "agent.json",
+    "config.json",
+    "memory.jsonl",
+    "persona.md",
+    "prompt.md",
+    "schedule.json",
 ]
 EXCLUDED_DIRS = {"tools", "logs", "backups", "templates"}
+
 
 # --- Validation Utilities ---
 def validate_agent(agent_path: Path, fix: bool = False) -> dict:
@@ -46,6 +49,7 @@ def validate_agent(agent_path: Path, fix: bool = False) -> dict:
         report["files"][filename] = "✅ OK"
     return report
 
+
 # --- HTML Report Generator ---
 def generate_html_report(report: dict, output_path: Path):
     html = ["<html><body><h1>Agent Validation Report</h1><ul>"]
@@ -57,9 +61,11 @@ def generate_html_report(report: dict, output_path: Path):
     html.append("</ul></body></html>")
     output_path.write_text("\n".join(html))
 
+
 # --- Git Tag ---
 def create_git_tag(version: str):
     os.system(f"git tag {version} && git push origin {version}")
+
 
 # --- Bootstrap Agent ---
 def bootstrap_agent(base: Path, name: str):
@@ -69,6 +75,7 @@ def bootstrap_agent(base: Path, name: str):
         p = target / f
         p.write_text("{}" if f.endswith(".json") or f.endswith(".jsonl") else f"# {f}")
     print(f"✅ Bootstrapped agent at {target}")
+
 
 # --- CLI Entry Point ---
 def main():
@@ -121,6 +128,7 @@ def main():
 
     else:
         parser.print_help()
+
 
 if __name__ == "__main__":
     main()

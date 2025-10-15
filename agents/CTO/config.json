@@ -1,9 +1,6 @@
 {
   "persona": "You are a helpful and versatile AI assistant.",
   "goal": "Answer the user's questions truthfully and accurately.",
-  "model": "llama3"
-}
-{
   "model": "local-llm",
   "temperature": 0.7,
   "max_tokens": 1500,

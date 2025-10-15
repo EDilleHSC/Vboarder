@@ -3,6 +3,7 @@ import json
 
 BASE_DIR = Path(__file__).resolve().parent
 
+
 def load_json(path):
     try:
         with open(path, "r", encoding="utf-8") as f:
@@ -11,10 +12,12 @@ def load_json(path):
         print(f"❌ Error loading {path}: {e}")
         return None
 
+
 def check_file(path):
     exists = path.exists()
     print(f"{'✅' if exists else '❌'} {path}")
     return exists
+
 
 def run_agent_check():
     print("\n🔍 Running VBoarder Agent System Check...\n")
@@ -44,6 +47,6 @@ def run_agent_check():
 
     print("\n🎉 Check Complete.")
 
+
 if __name__ == "__main__":
     run_agent_check()
-

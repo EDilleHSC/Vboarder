@@ -1,39 +1,45 @@
 #!/usr/bin/env python3
-import os
 from datetime import datetime
 import json
 import argparse
 from pathlib import Path
 
 CORE_FILES = [
-    "agent.json", "config.json", "memory.jsonl",
-    "persona.md", "prompt.md", "schedule.json"
+    "agent.json",
+    "config.json",
+    "memory.jsonl",
+    "persona.md",
+    "prompt.md",
+    "schedule.json",
 ]
 
 EXCLUDED_DIRS = {"tools", "templates", "logs", "backups", "agent_runtime"}
 
+
 def is_valid_json(file_path):
     try:
         if file_path.suffix == ".jsonl":
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 lines = f.readlines()
                 if not lines:
                     return False, "Empty file"
                 for line in lines:
                     json.loads(line)
         else:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 json.load(f)
         return True, "OK"
     except Exception as e:
         return False, str(e)
 
+
 def is_valid_md(file_path):
     try:
-        with open(file_path, 'r', encoding='utf-8') as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             return bool(f.read().strip()), "OK"
     except Exception as e:
         return False, str(e)
+
 
 def scan_agents(base_dir: Path) -> dict:
     results = {}
@@ -64,12 +70,13 @@ def scan_agents(base_dir: Path) -> dict:
         results[agent.name] = agent_report
     return results
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--base",
         default="/mnt/d/ai/projects/vboarder/agents",
-        help="Root agent directory"
+        help="Root agent directory",
     )
     args = parser.parse_args()
 
@@ -88,6 +95,7 @@ def main():
     print("📊 Stability Summary:")
     for agent, report in results.items():
         print(f" - {agent}: {report['status']}")
+
 
 if __name__ == "__main__":
     main()

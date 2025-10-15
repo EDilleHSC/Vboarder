@@ -1,22 +1,13 @@
 # setup.py
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 setup(
     name="api-key-agent",
     version="0.1.0",
     packages=find_packages(),
-    install_requires=[
-        "requests",
-        "cryptography",
-        "pytest",
-        "python-dotenv"
-    ],
-    entry_points={
-        "console_scripts": [
-            "apikey-check=cli:run_cli"
-        ]
-    },
+    install_requires=["requests", "cryptography", "pytest", "python-dotenv"],
+    entry_points={"console_scripts": ["apikey-check=cli:run_cli"]},
     author="Your Name",
     description="Universal API key validator and agent runtime",
     keywords=["API", "Key", "Validator", "Agent"],

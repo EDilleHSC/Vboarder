@@ -29,7 +29,7 @@ function Backup-File {
 Write-Host "[1/4] Fixing agent.json..." -ForegroundColor Cyan
 if (Test-Path ".\agent.json") {
   $agent = Get-Content ".\agent.json" -Raw | ConvertFrom-Json
-  
+
   $needsFix = $false
   if ($agent.name -eq "UNKNOWN") {
     Write-Host "  - Changing name: 'UNKNOWN' -> 'SEC'" -ForegroundColor Yellow
@@ -39,7 +39,7 @@ if (Test-Path ".\agent.json") {
     Write-Host "  - Adding role: 'Executive Secretary'" -ForegroundColor Yellow
     $needsFix = $true
   }
-  
+
   if ($needsFix) {
     if (-not $WhatIf) {
       Backup-File ".\agent.json"
@@ -60,7 +60,7 @@ if (Test-Path ".\agent.json") {
 Write-Host "`n[2/4] Fixing agent_config.json..." -ForegroundColor Cyan
 if (Test-Path ".\agent_config.json") {
   $agentCfg = Get-Content ".\agent_config.json" -Raw | ConvertFrom-Json
-  
+
   $needsFix = $false
   if ($agentCfg.metadata -and $agentCfg.metadata.name -eq $null) {
     Write-Host "  - Setting metadata.name: null -> 'SEC'" -ForegroundColor Yellow
@@ -70,7 +70,7 @@ if (Test-Path ".\agent_config.json") {
     Write-Host "  - Lowering temperature: $($agentCfg.runtime.temperature) -> 0.3" -ForegroundColor Yellow
     $needsFix = $true
   }
-  
+
   if ($needsFix) {
     if (-not $WhatIf) {
       Backup-File ".\agent_config.json"
@@ -116,7 +116,7 @@ if ($deletedCount -gt 0 -and -not $WhatIf) {
 Write-Host "`n[4/4] Checking for duplicate backup configs..." -ForegroundColor Cyan
 if (Test-Path ".\config") {
   $backupConfigs = Get-ChildItem ".\config" -Filter "*.bak*" | Where-Object { $_.Name -notlike "*$timestamp*" }
-  
+
   if ($backupConfigs.Count -gt 0) {
     Write-Host "  Found $($backupConfigs.Count) old backup config files:" -ForegroundColor Yellow
     foreach ($bc in $backupConfigs) {

@@ -10,8 +10,9 @@ import os
 TOOLS = {
     "patch": "patch_agents.py",
     "migrate": "migrate_agents.py",
-    "upgrade": "create_or_upgrade_agent.py"
+    "upgrade": "create_or_upgrade_agent.py",
 }
+
 
 def run_tool(tool_name):
     tool_path = TOOLS.get(tool_name)
@@ -27,11 +28,13 @@ def run_tool(tool_name):
         print(f"[FAIL] Error running '{tool_name}': {e}")
         sys.exit(1)
 
+
 def list_tools():
     print("\nAvailable Agent Care Commands:")
     for cmd in TOOLS:
         print(f"  - {cmd}")
     print("\nUsage: python3 agent_care.py [COMMAND]\n")
+
 
 def main():
     parser = argparse.ArgumentParser(description="Unified Agent Care CLI")
@@ -46,6 +49,7 @@ def main():
     else:
         print(f"[ERROR] Unknown command '{cmd}'. Use 'list' to see valid options.")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

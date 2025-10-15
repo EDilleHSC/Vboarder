@@ -1,10 +1,11 @@
 import os
-import json
 import unittest
+
 from agents.agent_runtime.utils import load_agent, load_memory
 
 AGENT_NAME = "test_agent"
 AGENT_DIR = os.path.join("agents", AGENT_NAME)
+
 
 class AgentSystemTest(unittest.TestCase):
 
@@ -26,7 +27,14 @@ class AgentSystemTest(unittest.TestCase):
         agent_data = load_agent(AGENT_DIR)
         memory = load_memory(AGENT_DIR)
 
-        messages = [{"role": "system", "content": agent_data.get("system_prompt", "You are a helpful assistant.")}]
+        messages = [
+            {
+                "role": "system",
+                "content": agent_data.get(
+                    "system_prompt", "You are a helpful assistant."
+                ),
+            }
+        ]
         for entry in memory:
             messages.append({"role": "user", "content": entry["q"]})
             messages.append({"role": "assistant", "content": entry["a"]})
@@ -37,5 +45,6 @@ class AgentSystemTest(unittest.TestCase):
         self.assertEqual(messages[-1]["role"], "user")
         self.assertIn("content", messages[-1])
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

@@ -4,9 +4,12 @@ import json
 from datetime import datetime
 
 # === CONFIG ===
-TEMPLATE_DIR = Path("/mnt/d/ai/projects/vboarder/agents/tools/templates/super_agent_baseline")
+TEMPLATE_DIR = Path(
+    "/mnt/d/ai/projects/vboarder/agents/tools/templates/super_agent_baseline"
+)
 AGENTS_DIR = Path("/mnt/d/ai/projects/vboarder/agents/super_agents")
 MANIFEST_FILE = AGENTS_DIR / "super_manifest.json"
+
 
 # === AGENT CREATOR ===
 def create_super_agent(agent_name, role="Unassigned", priority=5, linked_agents=[]):
@@ -37,11 +40,12 @@ def create_super_agent(agent_name, role="Unassigned", priority=5, linked_agents=
         "status": "active",
         "priority": priority,
         "linked_agents": linked_agents,
-        "created_at": datetime.utcnow().isoformat() + "Z"
+        "created_at": datetime.utcnow().isoformat() + "Z",
     }
 
     MANIFEST_FILE.write_text(json.dumps(manifest, indent=2))
     print(f"📝 Registered '{agent_name}' in Super Agent manifest.")
+
 
 # === CLI ENTRY ===
 if __name__ == "__main__":
@@ -57,7 +61,7 @@ if __name__ == "__main__":
             agent_name=agent_name,
             role=role or "Unassigned",
             priority=int(priority) if priority.isdigit() else 5,
-            linked_agents=linked_agents
+            linked_agents=linked_agents,
         )
     else:
         print("⚠️ Agent name is required.")

@@ -137,4 +137,3 @@ Next Suggested Enhancements (Optional)
 "@ | Out-File $reportFile -Encoding UTF8
 
 Write-Host "Maintenance complete. Report generated: $reportFile"
-

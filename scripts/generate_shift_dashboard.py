@@ -4,7 +4,6 @@ VBoarder CTO Shift Dashboard Generator
 Generates detailed daily system status & completion report.
 """
 
-import os
 import datetime
 from pathlib import Path
 

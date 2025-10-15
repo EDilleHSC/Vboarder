@@ -62,19 +62,31 @@ if __name__ == "__main__":
     main()
 agentctl - AI AgentOps CLI Tool
 """
-import os
 import sys
 import json
 import argparse
 from pathlib import Path
 from datetime import datetime
 
-REQUIRED_FILES = ["agent.json", "config.json", "memory.jsonl", "persona.md", "prompt.md", "schedule.json"]
+REQUIRED_FILES = [
+    "agent.json",
+    "config.json",
+    "memory.jsonl",
+    "persona.md",
+    "prompt.md",
+    "schedule.json",
+]
+
 
 def validate_agents(base_path: Path, auto_fix=False):
     results = {}
     for agent_dir in sorted(base_path.iterdir()):
-        if not agent_dir.is_dir() or agent_dir.name.lower() in ["tools", "logs", "templates", "backups"]:
+        if not agent_dir.is_dir() or agent_dir.name.lower() in [
+            "tools",
+            "logs",
+            "templates",
+            "backups",
+        ]:
             continue
 
         agent_result = {"status": "✅ PASS", "files": {}}
@@ -84,7 +96,9 @@ def validate_agents(base_path: Path, auto_fix=False):
                 agent_result["files"][filename] = "❌ MISSING"
                 agent_result["status"] = "❌ FAIL"
                 if auto_fix:
-                    file_path.write_text("{}" if filename.endswith(".json") else "", encoding="utf-8")
+                    file_path.write_text(
+                        "{}" if filename.endswith(".json") else "", encoding="utf-8"
+                    )
                     agent_result["files"][filename] = "⚠️ FIXED"
                 continue
 
@@ -107,10 +121,12 @@ def validate_agents(base_path: Path, auto_fix=False):
         results[agent_dir.name] = agent_result
     return results
 
+
 def print_report(results):
     print("\n📊 Agent Validation Report:")
     for name, report in results.items():
         print(f" - {name}: {report['status']}")
+
 
 def save_report(results, path):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -119,13 +135,18 @@ def save_report(results, path):
         json.dump(results, f, indent=2)
     print(f"\n📝 Detailed report saved to: {output_path}")
 
+
 def main():
     parser = argparse.ArgumentParser(description="AgentOps CLI Utility")
     subparsers = parser.add_subparsers(dest="command")
 
     validate = subparsers.add_parser("validate", help="Validate all agents")
-    validate.add_argument("--base", type=str, default="./agents", help="Base agent directory")
-    validate.add_argument("--fix", action="store_true", help="Attempt to auto-fix missing files")
+    validate.add_argument(
+        "--base", type=str, default="./agents", help="Base agent directory"
+    )
+    validate.add_argument(
+        "--fix", action="store_true", help="Attempt to auto-fix missing files"
+    )
 
     args = parser.parse_args()
 
@@ -141,6 +162,7 @@ def main():
         save_report(results, base)
     else:
         parser.print_help()
+
 
 if __name__ == "__main__":
     main()

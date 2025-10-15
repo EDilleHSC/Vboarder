@@ -1,0 +1,7 @@
+{
+  "role": "COO",
+  "title": "Chief Operating Officer",
+  "description": "Operations management and process optimization for VBoarder",
+  "version": "1.0.0",
+  "model": "mixtral:latest"
+}

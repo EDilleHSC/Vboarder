@@ -10,6 +10,7 @@ REGISTRY_PATH = BASE_DIR.joinpath("agent_registry.json")
 DEFAULT_PROMPT_PATH = "prompt.md"
 DEFAULT_PERSONA_PATH = "persona.txt"
 
+
 def load_json(path):
     """Safely loads a JSON file, handling UTF-8 BOM."""
     if not path.is_file():
@@ -23,6 +24,7 @@ def load_json(path):
         print(f"❌ Error loading or decoding {path}: {e}")
         return None
 
+
 def save_json(path, data):
     """Safely saves data to a JSON file."""
     try:
@@ -34,6 +36,7 @@ def save_json(path, data):
     except Exception as e:
         print(f"❌ Error saving {path}: {e}")
         return False
+
 
 def patch_agent_files():
     """
@@ -58,12 +61,12 @@ def patch_agent_files():
         if not rel_path:
             print(f"⚠️ [{role}] Skipping: Missing 'path' in registry entry.")
             continue
-        
+
         # Determine the full path to the agent's main JSON file
         agent_file_path = BASE_DIR.joinpath(rel_path)
-        
+
         print(f"\n---> Checking [{role}] at {agent_file_path}")
-        
+
         # Load agent data using BOM-safe function
         agent_data = load_json(agent_file_path)
 
@@ -89,17 +92,18 @@ def patch_agent_files():
         # 3. Save the Patched Data (also fixes indentation and encoding)
         if needs_save:
             if save_json(agent_file_path, agent_data):
-                print(f"   [SUCCESS] File saved and clean.")
+                print("   [SUCCESS] File saved and clean.")
             else:
-                print(f"   [FAILED] Could not save file.")
+                print("   [FAILED] Could not save file.")
         else:
             # Re-save even if not patched to fix BOM/indentation, if necessary
             # For simplicity, we assume fixing the content is the priority
             # If you want to force save to fix BOM/indentation:
             # save_json(agent_file_path, agent_data)
-            print(f"   [CLEAN] No patches applied. File structure appears correct.")
+            print("   [CLEAN] No patches applied. File structure appears correct.")
 
     print("\n🎉 Agent Patching Complete. Rerun your system check now.")
+
 
 if __name__ == "__main__":
     patch_agent_files()
